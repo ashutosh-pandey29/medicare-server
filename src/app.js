@@ -31,6 +31,8 @@ app.use(
   })
 );
 
+console.log(env.FRONTEND_URL);
+
 //? PARSE JSON PAYLOAD -  request with JSON data
 app.use(express.json());
 
@@ -52,6 +54,13 @@ app.use("/api/v1", routes);
  * ! REDIRECT FRONTEND
  * ===============================
  */
+
+app.use((req, res, next) => {
+  if (!req.path.startsWith("/api")) {
+    return res.redirect(`${env.FRONTEND_URL}`);
+  }
+  next();
+});
 
 /**
  * ================================
