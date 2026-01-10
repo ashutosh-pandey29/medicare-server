@@ -31,7 +31,7 @@ app.use(
   })
 );
 
-console.log(env.FRONTEND_URL);
+console.log("app url ",env.FRONTEND_URL);
 
 //? PARSE JSON PAYLOAD -  request with JSON data
 app.use(express.json());

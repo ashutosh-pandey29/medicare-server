@@ -16,6 +16,8 @@ export const initSocket = (httpServer) => {
 
   const isProd = env.NODE_ENV === "production";
 
+  console.log("socket front", env.FRONTEND_URL);
+
   io.on("connection", (socket) => {
     if (!isProd) {
       console.log("Socket connected:", socket.id);
