@@ -23,8 +23,8 @@ export const continueWithGoogleController = async (req, res, next) => {
     // Access token will be sent in response body for client-side use
     setCookie(res, refreshToken);
 
+    console.log(env.FRONTEND_URL);
     // redirect to website
-
     return res.redirect(`${env.FRONTEND_URL}`);
   } catch (err) {
     // console.log(err);

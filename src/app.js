@@ -55,12 +55,12 @@ app.use("/api/v1", routes);
  * ===============================
  */
 
-app.use((req, res, next) => {
-  if (!req.path.startsWith("/api")) {
-    return res.redirect(`${env.FRONTEND_URL}`);
-  }
-  next();
-});
+// app.use((req, res, next) => {
+//   if (!req.path.startsWith("/api")) {
+//     return res.redirect(`${env.FRONTEND_URL}`);
+//   }
+//   next();
+// });
 
 /**
  * ================================
