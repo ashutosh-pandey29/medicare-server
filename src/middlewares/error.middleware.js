@@ -28,5 +28,8 @@ export const globalErrorHandler = (err, req, res, next) => {
   const message = err.message || SERVER_MESSAGES.INTERNAL_SERVER_ERROR;
   const errors = err.errors || [];
 
+    console.error("ERROR:", err);
+
+
   return respond.fail(res, { statusCode: status, message, errors });
 };
