@@ -14,16 +14,25 @@ export const initSocket = (httpServer) => {
     },
   });
 
+  const isProd = env.NODE_ENV === "production";
+
   io.on("connection", (socket) => {
-    console.log("Socket connected:", socket.id);
+    if (!isProd) {
+      console.log("Socket connected:", socket.id);
+    }
 
     socket.on("join", (userId) => {
       socket.join(userId);
-      console.log(`User joined room: ${userId}`);
+
+      if (!isProd) {
+        console.log(`User joined room: ${userId}`);
+      }
     });
 
     socket.on("disconnect", () => {
-      console.log("Socket disconnected:", socket.id);
+      if (!isProd) {
+        console.log("Socket disconnected:", socket.id);
+      }
     });
   });
 
