@@ -44,43 +44,42 @@ export const registerService = async (data) => {
   // generate verification template
   const verificationEmailTemplate = verificationTemplate(username, verificationUrl);
 
-  //calling mail sender ,  disable mail for dev mode 
+  //calling mail sender ,  disable mail for dev mode
   // await mailTo(email, "Verify Your Account - Medicare Hospital", verificationEmailTemplate);
 
   // notify admin when new user registered via socket
   const admin = await db.fetchOne(User, { role: "admin" });
-  if (!admin) {
-    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, AUTH_MESSAGES.INTERNAL_SERVER_ERROR);
-  }
-  const now = new Date();
-  const notificationPayload = {
-    title: NOTIFICATION_MESSAGE.NEW_ACCOUNT,
-    message: `${username} registered on ${now.toLocaleString()}`,
-    type: "NEW_ACCOUNT",
-    isRead: false,
-    createdAt: now,
-  };
-
-  // socket notification
-  await notifyRealtime(admin?._id, notificationPayload);
-
-  // notify admin via web push
-
-  const adminSubscription = await db.fetchOne(Subscription, { role: "admin" });
-
-  if (adminSubscription) {
-    const pushPayload = {
+  if (admin) {
+    const now = new Date();
+    const notificationPayload = {
       title: NOTIFICATION_MESSAGE.NEW_ACCOUNT,
-      body: `${username} registered on ${now.toLocaleString()}`,
-      url: "dashboard/admin/notifications",
+      message: `${username} registered on ${now.toLocaleString()}`,
+      type: "NEW_ACCOUNT",
+      isRead: false,
+      createdAt: now,
     };
 
-    // console.log(adminSubscription)
+    // socket notification
+    await notifyRealtime(admin?._id, notificationPayload);
 
-    await pushNotification(
-      { endpoint: adminSubscription.endpoint, keys: adminSubscription.keys },
-      pushPayload
-    );
+    // notify admin via web push
+
+    const adminSubscription = await db.fetchOne(Subscription, { role: "admin" });
+
+    if (adminSubscription) {
+      const pushPayload = {
+        title: NOTIFICATION_MESSAGE.NEW_ACCOUNT,
+        body: `${username} registered on ${now.toLocaleString()}`,
+        url: "dashboard/admin/notifications",
+      };
+
+      // console.log(adminSubscription)
+
+      await pushNotification(
+        { endpoint: adminSubscription.endpoint, keys: adminSubscription.keys },
+        pushPayload
+      );
+    }
   }
 
   return {
