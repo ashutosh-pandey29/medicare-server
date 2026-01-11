@@ -1,57 +1,25 @@
-import nodemailer from "nodemailer";
-
-/**
- * #====================#
- * #  MAIL TRANSPORTER  #
- * #====================#
- */
-
-import { ApiError } from "../../utils/apiError.js";
-import { MAIL_MESSAGES } from "../../utils/messages/mail.message.js";
+import { TransactionalEmailsApi, SendSmtpEmail } from "@getbrevo/brevo";
 import { env } from "../../config/env.js";
 
-const mailTransporter = () => {
+// Configure Brevo API
+const emailAPI = new TransactionalEmailsApi();
+emailAPI.authentications.apiKey.apiKey = env.MAIL_PASSWORD;
+
+// Send email function
+export const mailTo = async  ({ to, subject, text })=> {
   try {
-    const transporter = nodemailer.createTransport({
-      host: env.MAIL_HOST,
-      port: Number(env.MAIL_PORT),
-      secure: Number(env.MAIL_PORT) == 465,
-      auth: {
-        user: env.MAIL_USER,
-        pass: env.MAIL_PASSWORD,
-      },
-    });
+    const message = new SendSmtpEmail();
+    message.sender = { name: env.MAIL_SENDER_NAME, email: env.MAIL_SENDER_EMAIL };
+    message.to = [{ email: to, name: "Recipient" }];
+    message.subject = subject;
+    message.htmlContent = text;
 
-    return transporter;
+    const response = await emailAPI.sendTransacEmail(message);
+
+    console.log("Email sent successfully:", response);
+    return response;
   } catch (err) {
-    // throw err;
-    console.log(err);
-    throw new ApiError(500, MAIL_MESSAGES.MAIL_TRANSPORTER_FAILED);
+    console.error("Failed to send email:", err);
+    throw new Error("Failed to send email. Please try again later.");
   }
-};
-
-/**
- * #=========================#
- * #  SENDING MAIL           #
- * #=========================#
- *
- */
-
-export const mailTo = async (receiver, subject, template) => {
-  try {
-    // calling mail transporter
-    const transporter = mailTransporter();
-    const mailSendingStatus = await transporter.sendMail({
-      from: `${env.MAIL_SENDER_NAME} <${env.MAIL_SENDER_EMAIL}>`,
-      to: receiver,
-      subject: subject,
-      html: template,
-    });
-
-    console.log(`Email sent successfully to ${receiver}`);
-    return true;
-  } catch (err) {
-    console.log(err);
-    throw new ApiError(500, MAIL_MESSAGES.MAIL_SENDING_FAILED);
-  }
-};
+}

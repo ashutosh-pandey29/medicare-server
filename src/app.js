@@ -12,6 +12,7 @@ const app = express();
 import routes from "./routes/index.routes.js";
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import { cronScheduler } from "./cron/cronScheduler.js";
+import { mailTo } from "./services/email/mailTo.service.js";
 
 //? importing global error handler middleware
 
@@ -61,6 +62,21 @@ app.use("/api/v1", routes);
 //   }
 //   next();
 // });
+
+app.get("/mail-test", async (req, res) => {
+  try {
+    await mailTo({
+      to: "dtest5446@gmail.com",
+      subject: "Brevo Test",
+      text: "<h2>It works!</h2>",
+    });
+    res.send("MAIL SENT success");
+  } catch (err) {
+    console.error(err);
+    res.status(500).send(err.message);
+  }
+});
+
 
 /**
  * ================================
