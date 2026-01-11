@@ -44,8 +44,8 @@ export const registerService = async (data) => {
   // generate verification template
   const verificationEmailTemplate = verificationTemplate(username, verificationUrl);
 
-  //calling mail sender ,  disable mail for dev mode
-  // await mailTo(email, "Verify Your Account - Medicare Hospital", verificationEmailTemplate);
+  //calling mail sender , 
+  await mailTo(email, "Verify Your Account - Medicare Hospital", verificationEmailTemplate);
 
   // notify admin when new user registered via socket
   const admin = await db.fetchOne(User, { role: "admin" });
