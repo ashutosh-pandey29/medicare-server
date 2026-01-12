@@ -22,6 +22,7 @@ export const forgotPasswordController = async (req, res, next) => {
     respond.success(res, { statusCode: HTTP_CODES.OK, message: message });
   } catch (err) {
     //pass error to global error handler
+    // console.log(err);
     next(err);
   }
 };
