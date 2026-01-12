@@ -39,7 +39,7 @@ export const registerService = async (data) => {
 
   try {
     // Store the user in the database if they don't already exist
-    createdUser = await db.create(User, formData);
+    createdUser = await db.createOne(User, formData);
 
     // Generate verification URL
     const verificationUrl = `${env.FRONTEND_URL}/auth/verify-email?token=${emailVerificationToken}`;
