@@ -23,7 +23,7 @@ import { isValidUsername, isValidEmail, isValidPassword } from "./inputValidatio
 //  Connect DB
 await connectDB();
 
-console.log(chalk.cyanBright("\n🔌Database connected successfully\n"));
+// console.log(chalk.cyanBright("\n🔌Database connected successfully\n"));
 
 // Readline setup
 const rl = readline.createInterface({
@@ -39,7 +39,6 @@ const ask = (question) =>
 const seedAdmin = async () => {
   try {
     console.log(chalk.yellow("🛠 Admin Seeding Started\n"));
-
     const username = await ask("Enter admin username: ");
     const email = await ask("Enter admin email: ");
     const password = await ask("Enter admin password: ");
@@ -62,7 +61,7 @@ const seedAdmin = async () => {
     }
 
     // Check existing admin
-    const exists = await db.fetchOne(User, { role: "admin" });
+    const exists = await db.fetchOne(User, { role: "admin", email });
 
     if (exists) {
       console.log(chalk.yellowBright("Admin already exists. Seeding skipped.\n"));

@@ -43,7 +43,11 @@ export const forgotPasswordService = async (data) => {
   const emailTemplate = resetPasswordTemplate(user.username, resetLink);
 
   // Send reset password email
-  const isSend = await mailTo(user.email, "Reset Your Password - Medicare Hospital", emailTemplate);
+  const isSend = await mailTo({
+    to: user.email,
+    subject: "Reset Your Password - Medicare Hospital",
+    text: emailTemplate,
+  });
 
   // Handle email sending failure
   if (!isSend) {
