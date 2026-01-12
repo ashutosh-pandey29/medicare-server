@@ -17,13 +17,13 @@ export const continueWithGoogleController = async (req, res, next) => {
   try {
     const profile = req.user;
 
-    const {refreshToken } = await googleLoginService(profile);
+    const { refreshToken } = await googleLoginService(profile);
 
     // Set refresh token in httpOnly cookie (secure storage)
     // Access token will be sent in response body for client-side use
     setCookie(res, refreshToken);
 
-    console.log(env.FRONTEND_URL);
+    console.log("google auth success : ", env.FRONTEND_URL);
     // redirect to website
     return res.redirect(`${env.FRONTEND_URL}`);
   } catch (err) {

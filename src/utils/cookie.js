@@ -13,6 +13,7 @@
  *  Default options include: httpOnly, secure (production only), sameSite=Strict, maxAge=1 day (configurable).
  */
 
+import { env } from "../config/env.js";
 import { ApiError } from "./apiError.js";
 import { HTTP_CODES } from "./httpCodes.js";
 import { SERVER_MESSAGES } from "./messages/server.message.js";
@@ -21,11 +22,10 @@ export const setCookie = (res, refreshToken) => {
   try {
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+      secure: env.NODE_ENV === "production",
+      sameSite: env.NODE_ENV === "production" ? "none" : "lax",
       maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
     });
-
     return true;
   } catch (err) {
     // Log for debugging
@@ -38,8 +38,8 @@ export const removeCookie = (res, key) => {
   try {
     res.clearCookie(key, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
-      sameSite: "strict",
+      secure: env.NODE_ENV === "production",
+      sameSite: env.NODE_ENV === "production" ? "none" : "lax",
       path: "/",
     });
   } catch (err) {
