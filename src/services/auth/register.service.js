@@ -35,21 +35,34 @@ export const registerService = async (data) => {
     emailVerificationTokenExpire: new Date(Date.now() + 24 * 60 * 60 * 1000),
   };
 
-  // Store the user in the database if they don't already exist
-  await db.findOrCreate(User, formData);
+  let createdUser;
 
-  // Generate verification URL
-  const verificationUrl = `${env.FRONTEND_URL}/auth/verify-email?token=${emailVerificationToken}`;
+  try {
+    // Store the user in the database if they don't already exist
+    createdUser = await db.create(User, formData);
 
-  // generate verification template
-  const verificationEmailTemplate = verificationTemplate(username, verificationUrl);
+    // Generate verification URL
+    const verificationUrl = `${env.FRONTEND_URL}/auth/verify-email?token=${emailVerificationToken}`;
 
-  //calling mail sender ,
-  await mailTo({
-    to: email,
-    subject: "Verify Your Account - Medicare Hospital",
-    text: verificationEmailTemplate,
-  });
+    // generate verification template
+    const verificationEmailTemplate = verificationTemplate(username, verificationUrl);
+
+    //calling mail sender ,
+    await mailTo({
+      to: email,
+      subject: "Verify Your Account - Medicare Hospital",
+      text: verificationEmailTemplate,
+    });
+  } catch (err) {
+    if (createdUser?._id) {
+      await db.deleteOne(User, { _id: createdUser._id });
+    }
+
+    throw new ApiError({
+      statusCode: HTTP_CODES.INTERNAL_SERVER_ERROR,
+      message: "Registration failed. Please try again.",
+    });
+  }
 
   // notify admin when new user registered via socket
   const admin = await db.fetchOne(User, { role: "admin" });
