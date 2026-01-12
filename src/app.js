@@ -63,19 +63,14 @@ app.use("/api/v1", routes);
 //   next();
 // });
 
-app.get("/mail-test", async (req, res) => {
-  try {
-    await mailTo({
-      to: "dtest5446@gmail.com",
-      subject: "Brevo Test",
-      text: "<h2>It works!</h2>",
-    });
-    res.send("MAIL SENT success");
-  } catch (err) {
-    console.error(err);
-    res.status(500).send(err.message);
-  }
+
+app.get("/debug/env", (req, res) => {
+  res.json({
+    NODE_ENV: env.NODE_ENV,
+    FRONTEND_URL: env.FRONTEND_URL,
+  });
 });
+
 
 
 /**
