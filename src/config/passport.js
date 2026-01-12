@@ -7,7 +7,7 @@ passport.use(
     {
       clientID: env.GOOGLE_CLIENT_ID,
       clientSecret: env.GOOGLE_CLIENT_SECRET,
-      callbackURL: "http://localhost:5000/api/v1/auth/google/callback",
+      callbackURL: `${env.GOOGLE_CALLBACK_URL}/api/v1/auth/google/callback`,
     },
     function (accessToken, refreshToken, profile, cb) {
       try {

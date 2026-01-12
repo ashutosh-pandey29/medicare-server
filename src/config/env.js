@@ -9,9 +9,7 @@ export const env = {
   PORT: process.env.PORT || 5000,
 
   // Database
-  MONGO_URI: isProd
-    ? process.env.MONGO_URI_PROD
-    : process.env.MONGO_URI_DEV,
+  MONGO_URI: isProd ? process.env.MONGO_URI_PROD : process.env.MONGO_URI_DEV,
 
   // JWT
   JWT_ACCESS_TOKEN: process.env.JWT_ACCESS_TOKEN_SECRET,
@@ -20,9 +18,7 @@ export const env = {
   JWT_REFRESH_TOKEN_EXPIRES: process.env.JWT_REFRESH_TOKEN_EXPIRES_IN,
 
   // Frontend URL
-  FRONTEND_URL: isProd
-    ? process.env.FRONTEND_URL_PROD
-    : process.env.FRONTEND_URL_DEV,
+  FRONTEND_URL: isProd ? process.env.FRONTEND_URL_PROD : process.env.FRONTEND_URL_DEV,
 
   // Mail
   MAIL_HOST: process.env.MAIL_HOST,
@@ -40,6 +36,9 @@ export const env = {
   // Google Auth
   GOOGLE_CLIENT_ID: process.env.GOOGLE_CLIENT_ID,
   GOOGLE_CLIENT_SECRET: process.env.GOOGLE_CLIENT_SECRET,
+  GOOGLE_CALLBACK_URL: isProd
+    ? process.env.GOOGLE_CALLBACK_URL_PROD
+    : process.env.GOOGLE_CALLBACK_URL_DEV,
 
   // Web Push Notifications
   VAPID_SUBJECT: process.env.VAPID_SUBJECT,
