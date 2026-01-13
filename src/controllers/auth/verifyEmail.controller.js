@@ -15,11 +15,10 @@ import { respond } from "../../utils/respond.js";
 
 export const verifyEmailController = async (req, res, next) => {
   try {
-
     const { token } = req.params;
-    const message = await verifyEmailService(token);
+    const response = await verifyEmailService(token);
 
-    respond.success(res, { statusCode: HTTP_CODES.OK, message });
+    respond.success(res, response);
   } catch (err) {
     // pass error to global error handler
     next(err);

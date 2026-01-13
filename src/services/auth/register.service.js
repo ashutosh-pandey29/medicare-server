@@ -43,10 +43,8 @@ export const registerService = async (data) => {
 
     // Generate verification URL
     const verificationUrl = `${env.FRONTEND_URL}/auth/verify-email?token=${emailVerificationToken}`;
-
     // generate verification template
     const verificationEmailTemplate = verificationTemplate(username, verificationUrl);
-
     //calling mail sender ,
     await mailTo({
       to: email,
