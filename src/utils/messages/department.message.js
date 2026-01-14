@@ -3,6 +3,8 @@ const DEPARTMENT_MESSAGE = {
   CREATED: "Department created successfully.",
   CREATE_FAILED: "Unable to create department. Please try again later.",
 
+  /**=========== */
+  ALREADY_EXIST :"Department already exist",
   /*============= FETCH=========================*/
   FETCH_ALL_SUCCESS: "Departments fetched successfully.",
   FETCH_SINGLE_SUCCESS: "Department details fetched successfully.",
@@ -41,3 +43,5 @@ const DEPARTMENT_MESSAGE = {
   SOMETHING_WENT_WRONG: "Something went wrong. Please contact support.",
   INVALID_PAYLOAD: "Invalid department data provided.",
 };
+
+export default DEPARTMENT_MESSAGE;
