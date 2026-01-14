@@ -1,8 +1,23 @@
 import express from "express";
 const router = express.Router();
 
-//! Get all departments ,  access level : admin and public
-router.get("/all", getAllDepartmentController);
+import {
+  deleteDepartmentController,
+  departmentStatsController,
+  getDepartmentRevenueController,
+  getDoctorsByDepartmentController,
+  newDepartmentController,
+  updateDepartmentController,
+  getPatientsByDepartmentController,
+  getAllAppointmentController,
+  getPublicDepartmentsController,
+} from "../../controllers/department/index.controller.js";
+
+//! Get all departments ,  access level : admin
+router.get("/all", getAllAppointmentController);
+
+//! Public department dropdown (id + name only) access level: public
+router.get("/public", getPublicDepartmentsController);
 
 //! Add a new department ,  access level:admin
 router.post("/new", newDepartmentController);
