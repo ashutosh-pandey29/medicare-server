@@ -4,7 +4,7 @@ export const DEPARTMENT_MESSAGE = {
   CREATE_FAILED: "Unable to create department. Please try again later.",
 
   /**=========== */
-  ALREADY_EXIST :"Department already exist",
+  ALREADY_EXIST: "Department already exist",
   /*============= FETCH=========================*/
   FETCH_ALL_SUCCESS: "Departments fetched successfully.",
   FETCH_SINGLE_SUCCESS: "Department details fetched successfully.",
@@ -17,7 +17,8 @@ export const DEPARTMENT_MESSAGE = {
   /*=========== DELETE=========================*/
   DELETED: "Department deleted successfully.",
   DELETE_FAILED: "Unable to delete department. Please try again later.",
-  DELETE_BLOCKED: "Department cannot be deleted because doctors are assigned to it.",
+  DELETE_BLOCKED: "Department has linked doctors or appointments. Use force delete to proceed.",
+  FORCE_DELETED: "Department force deleted successfully (soft delete applied).",
 
   /*=========== VALIDATION=========================*/
   NAME_REQUIRED: "Department name is required.",

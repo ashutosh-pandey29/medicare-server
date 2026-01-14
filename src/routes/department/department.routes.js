@@ -26,7 +26,7 @@ router.post("/new", newDepartmentController);
 router.put("/update/:departmentId", updateDepartmentController);
 
 //! Delete a department,access level:admin
-router.delete("/delete", deleteDepartmentController);
+router.delete("/delete/:departmentId", deleteDepartmentController);
 
 //! Get stats for all departments (total doctors, total patients)  ,  access level:admin
 router.get("/stats", departmentStatsController);

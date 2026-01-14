@@ -11,7 +11,6 @@ const departmentSchema = new mongoose.Schema(
     departmentName: {
       type: String,
       required: true,
-      unique: true,
       trim: true,
     },
 
@@ -25,6 +24,16 @@ const departmentSchema = new mongoose.Schema(
       type: String,
       trim: true,
       maxlength: 500,
+    },
+
+    isDeleted: {
+      type: Boolean,
+      default: false,
+    },
+
+    deletedAt: {
+      type: Date,
+      default: null,
     },
   },
   { timestamps: true }
