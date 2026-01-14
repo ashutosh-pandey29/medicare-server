@@ -1,4 +1,4 @@
-const DEPARTMENT_MESSAGE = {
+export const DEPARTMENT_MESSAGE = {
   /* ============= CREATE=========================*/
   CREATED: "Department created successfully.",
   CREATE_FAILED: "Unable to create department. Please try again later.",
@@ -43,5 +43,3 @@ const DEPARTMENT_MESSAGE = {
   SOMETHING_WENT_WRONG: "Something went wrong. Please contact support.",
   INVALID_PAYLOAD: "Invalid department data provided.",
 };
-
-export default DEPARTMENT_MESSAGE;

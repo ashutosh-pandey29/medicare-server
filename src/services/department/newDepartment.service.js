@@ -2,7 +2,7 @@ import { generateDepartmentId } from "../../helpers/id.helper.js";
 import Department from "../../models/Department.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
-import DEPARTMENT_MESSAGE from "../../utils/messages/department.message.js";
+import {DEPARTMENT_MESSAGE} from "../../utils/messages/department.message.js";
 import { db } from "../db/db.service.js";
 
 export const newDepartmentService = async (payload) => {

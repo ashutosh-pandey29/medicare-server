@@ -23,7 +23,7 @@ router.get("/public", getPublicDepartmentsController);
 router.post("/new", newDepartmentController);
 
 //! Update a department, access level:admin
-router.put("/update", updateDepartmentController);
+router.put("/update/:departmentId", updateDepartmentController);
 
 //! Delete a department,access level:admin
 router.delete("/delete", deleteDepartmentController);
