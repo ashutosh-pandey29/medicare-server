@@ -30,6 +30,7 @@ export const DEPARTMENT_MESSAGE = {
   FEES_NUMBER: "Department consultation fee must be a valid number.",
   FEES_POSITIVE: "Department consultation fee must be greater than zero.",
   FEES_INVALID: "Invalid department consultation fee value.",
+  FEES_MAX:"Fees cannot exceed 1,000,000",
   DESCRIPTION_STRING: "Department description must be a valid string.",
   DESCRIPTION_MAX: "Department description must not exceed 500 characters.",
   ID_REQUIRED: "Department ID is required.",
