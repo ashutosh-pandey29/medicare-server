@@ -1,4 +1,4 @@
-export { getAllAppointmentController } from "./getAllDepartment.controller.js";
+export { getAllDepartmentController } from "./getAllDepartment.controller.js";
 export { deleteDepartmentController } from "./deleteDepartment.controller.js";
 export { newDepartmentController } from "./newDepartment.controller.js";
 export { updateDepartmentController } from "./updateDepartment.controller.js";

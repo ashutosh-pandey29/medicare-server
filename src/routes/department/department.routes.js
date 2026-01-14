@@ -9,12 +9,12 @@ import {
   newDepartmentController,
   updateDepartmentController,
   getPatientsByDepartmentController,
-  getAllAppointmentController,
+  getAllDepartmentController,
   getPublicDepartmentsController,
 } from "../../controllers/department/index.controller.js";
 
 //! Get all departments ,  access level : admin
-router.get("/all", getAllAppointmentController);
+router.get("/all", getAllDepartmentController);
 
 //! Public department dropdown (id + name only) access level: public
 router.get("/public", getPublicDepartmentsController);

@@ -44,7 +44,7 @@ export const db = {
 
   //================DELETE ONE ==============
 
-  deleteOne: async (Model , filter={}) => {
+  deleteOne: async (Model, filter = {}) => {
     return await Model.deleteMany(filter);
   },
 
@@ -70,7 +70,10 @@ export const db = {
 
   //=========== fetchMany=================
 
-  fetchMany: async () => {},
+  fetchAll: async (Model, filter = {}, select = "") => {
+    const doc = await Model.find(filter).select(select);
+    return doc;
+  },
 
   //============= check data exist or not
 
