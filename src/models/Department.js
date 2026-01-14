@@ -14,6 +14,12 @@ const departmentSchema = new mongoose.Schema(
       required: true,
       min: 0,
     },
+
+    departmentDescription: {
+      type: String,
+      trim: true,
+      maxlength: 500,
+    },
   },
   { timestamps: true }
 );
