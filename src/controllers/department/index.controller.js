@@ -6,4 +6,5 @@ export { getPatientsByDepartmentController } from "./getPatientsByDepartment.con
 export { getDoctorsByDepartmentController } from "./getDoctorsByDepartment.controller.js";
 export { getDepartmentRevenueController } from "./getDepartmentRevenue.controller.js";
 export { departmentStatsController } from "./departmentStats.controller.js";
-export {getPublicDepartmentsController} from "./getPublicDepartments.controller.js"
+export { getPublicDepartmentsController } from "./getPublicDepartments.controller.js";
+export { getDepartmentByIdController } from "./getDepartmentById.controller.js";

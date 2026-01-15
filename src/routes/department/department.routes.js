@@ -11,6 +11,7 @@ import {
   getPatientsByDepartmentController,
   getAllDepartmentController,
   getPublicDepartmentsController,
+  getDepartmentByIdController
 } from "../../controllers/department/index.controller.js";
 
 import { payloadValidator } from "../../middlewares/validator.middleware.js";
@@ -23,6 +24,10 @@ router.get("/public", getPublicDepartmentsController);
 
 //! Get all departments ,  access level : admin
 router.get("/all", authMiddleware, authorizedRole("admin"), getAllDepartmentController);
+
+//! GET DEPARTMENT BY ID
+
+router.get("/:departmentId" ,  authMiddleware ,  authorizedRole("admin") ,  getDepartmentByIdController)
 
 //! Add a new department ,  access level:admin
 router.post(
