@@ -18,3 +18,18 @@ export const generateDepartmentId = (departmentName) => {
 
   return `${prefix}-${nameCode}-${randomNumber}`;
 };
+
+export const generateId = (prefix) => {
+  if (!prefix || typeof prefix !== "string") {
+    throw new Error("Prefix is required to generate ID");
+  }
+
+  const nameCode = prefix
+    .trim()
+    .toUpperCase()
+    .replace(/[^A-Z]/g, "")
+    .slice(0, 3)
+    .padEnd(3, "X"); // fallback if name < 3 chars
+
+  return `${nameCode}-${Date.now().toString().slice(-4)}`;
+};
