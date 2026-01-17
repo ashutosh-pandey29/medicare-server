@@ -82,7 +82,7 @@ const doctorSchema = new mongoose.Schema(
       default: false,
     },
 
-    isApproved: {
+    isVerified: {
       type: Boolean,
       default: false,
     },

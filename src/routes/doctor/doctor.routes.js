@@ -6,14 +6,23 @@ import {
   updateDoctorProfileController,
 } from "../../controllers/doctor/index.controller.js";
 
+import { authMiddleware } from "../../middlewares/auth.middleware.js";
+import { payloadValidator } from "../../middlewares/validator.middleware.js";
+import { doctorProfileValidation } from "../../Schemas/profile.schema.js";
 /* ================= DOCTOR PROFILE ================= */
 
 // get own profile
-router.get("/me", getDoctorProfileController);
+router.get("/me", authMiddleware, getDoctorProfileController);
 
 // create OR update profile
-router.post("/profile", createDoctorProfileController); // first time
-router.put("/profile", updateDoctorProfileController); // edit
+router.post(
+  "/profile",
+  authMiddleware,
+  payloadValidator(doctorProfileValidation),
+  createDoctorProfileController
+); // first time
+
+router.put("/profile", authMiddleware, updateDoctorProfileController); // edit
 
 /* ================= APPOINTMENTS ================= */
 

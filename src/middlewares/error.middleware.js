@@ -23,6 +23,7 @@ export const globalErrorHandler = (err, req, res, next) => {
       errors,
     });
   }
+  
 
   const status = err.statusCode || HTTP_CODES.INTERNAL_SERVER_ERROR;
   const message = err.message || SERVER_MESSAGES.INTERNAL_SERVER_ERROR;

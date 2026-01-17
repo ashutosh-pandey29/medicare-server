@@ -134,6 +134,12 @@ export const DOCTOR_MESSAGE = {
   LANGUAGE_REQUIRED: "At least one language is required.",
 
   /* =====================================================
+    MESSAGE FOR ADMIN
+  ===================================================== */
+
+  NOT_FOUND: "Data not found",
+  DATA_FETCH_FAILED: "Data Not fetched",
+  /* =====================================================
      GENERAL ERRORS
   ===================================================== */
   SOMETHING_WENT_WRONG: "Something went wrong. Please try again later.",

@@ -91,6 +91,22 @@ export const db = {
     return await q;
   },
 
+  //========== fetchManyWithPopulate===================
+
+  fetchManyWithPopulate: async (Model, filter = {}, select = "", populate = []) => {
+    const q = Model.find(filter).select(select);
+
+    if (Array.isArray(populate)) {
+      populate.forEach((p) => {
+        q.populate(p);
+      });
+    } else {
+      q.populate(populate);
+    }
+
+    return await q;
+  },
+
   //============= check data exist or not
 
   exists: async (Model, filter = {}) => {
