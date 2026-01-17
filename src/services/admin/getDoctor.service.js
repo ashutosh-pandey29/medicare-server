@@ -16,9 +16,19 @@ export const getDoctorService = async () => {
     throw new ApiError(HTTP_CODES.NOT_FOUND, DOCTOR_MESSAGE.NOT_FOUND);
   }
 
+  
+ const preparedDataTable = doctors.map((doc) => ({
+  profileId: doc.profileId,
+  doctorName: doc.doctorName,
+  isVerified: doc.isVerified,
+  departmentName: doc.departmentId?.departmentName,
+  _id: doc._id,
+}));
+
+
   return {
     httpStatus: HTTP_CODES.OK,
     message: "Data fetched",
-    data: doctors,
+    data: preparedDataTable,
   };
 };
