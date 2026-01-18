@@ -8,6 +8,8 @@ import { db } from "../db/db.service.js";
 import { doctorRegistrationTemplate } from "../email/templates/doctorRegistration.template.js";
 import { mailTo } from "../email/mailTo.service.js";
 import { env } from "../../config/env.js";
+import { generateStrongPassword } from "../../helpers/password.helper.js";
+
 
 export const verifyEmailService = async (token) => {
   if (!token) {
@@ -36,7 +38,7 @@ export const verifyEmailService = async (token) => {
   let hashedPassword;
 
   if (user.role === "doctor") {
-    tempPassword = crypto.randomBytes(6).toString("hex");
+    tempPassword = generateStrongPassword(10);
     hashedPassword = await bcrypt.hash(tempPassword, 10);
   }
 
@@ -69,5 +71,5 @@ export const verifyEmailService = async (token) => {
     });
   }
 
-  return {statusCode: HTTP_CODES.OK , message: AUTH_MESSAGES.EMAIL_VERIFIED };
+  return { statusCode: HTTP_CODES.OK, message: AUTH_MESSAGES.EMAIL_VERIFIED };
 };

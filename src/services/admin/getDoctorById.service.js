@@ -17,6 +17,7 @@ export const getDoctorByIdService = async (profileId) => {
   const preparedDoctorProfileResponse = {
     profileId: doctor.profileId,
     doctorName: doctor.doctorName,
+    email:doctor.userId ? doctor.userId.email : null,
     phone: doctor.phone,
     gender: doctor.gender,
     department: doctor.departmentId ? doctor.departmentId.departmentName : null,

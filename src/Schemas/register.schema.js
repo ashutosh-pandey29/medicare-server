@@ -21,7 +21,7 @@ export const registrationSchema = z.object({
     .min(8, "Password must be at least 8 characters")
     .max(20, "Password must not exceed 20 characters")
     .regex(
-      /^(?=.*[A-Za-z])(?=.*\d)[^\s]+$/,
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/,
       "Password must contain letters and numbers, no spaces"
     ),
 });

@@ -12,5 +12,8 @@ export const loginSchema = z.object({
   password: z
     .string({ required_error: "Password is required" })
     .min(8, "Password must be at least 8 characters")
-    .regex(/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]+$/, "Password must contain letters and numbers only"),
+    .regex(
+      /^(?=.*[A-Za-z])(?=.*\d)(?=.*[^A-Za-z\d]).{8,}$/,
+      "Password must contain letters and numbers only"
+    ),
 });
