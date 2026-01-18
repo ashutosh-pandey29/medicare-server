@@ -33,6 +33,7 @@ export const getDoctorProfileService = async (userId) => {
     bio: doctor.bio,
     education: doctor.education,
     workingTime: doctor.workingTime,
+    isVerified:doctor.isVerified,
   };
 
   return {

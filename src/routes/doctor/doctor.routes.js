@@ -14,7 +14,7 @@ import { doctorProfileValidation } from "../../Schemas/profile.schema.js";
 // get own profile
 router.get("/me", authMiddleware, getDoctorProfileController);
 
-// create OR update profile
+// create  profile
 router.post(
   "/profile",
   authMiddleware,
