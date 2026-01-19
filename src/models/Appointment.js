@@ -1,61 +1,94 @@
 import mongoose from "mongoose";
 
-const AppointmentSchema = new mongoose.Schema(
-  {
-    userId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
-      default: null,
-    },
-
-    departmentId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Department",
-      required: true,
-    },
-
-    doctorId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: "Doctor",
-      required: true,
-    },
-
-    appointmentId: {
-      type: String,
-      required: true,
-      unique: true,
-      index: true,
-    },
-
-    patient: {
-      name: { type: String, trim: true, required: true },
-      age: { type: Number, default: 0 },
-      gender: { type: String, enum: ["M", "F"] },
-      email: { type: String, required: true, trim: true },
-      phone: { type: String, trim: true },
-      problem: { type: String, trim: true },
-    },
-
-    paymentMode: {
-      type: String,
-      enum: ["online", "cash"],
-      default: "cash",
-    },
-
-    paymentAmount: {
-      type: Number,
-      required: true,
-      default: 0,
-    },
-
-    paymentStatus: {
-      type: String,
-      enum: ["pending", "success", "failed", "refund"],
-      default: "pending",
-    },
+const appointmentSchema = new mongoose.Schema({
+  appointmentId: {
+    type: String,
+    trim: true,
+    unique: true,
+    required: true,
   },
-  { timestamps: true }
-);
 
-const Appointment = mongoose.model("Appointment", AppointmentSchema);
+  departmentId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Department",
+    trim: true,
+  },
+
+  doctorId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Doctor",
+    trim: true,
+  },
+
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "User",
+    default: null,
+    trim: true,
+    required: false,
+  },
+
+  name: {
+    type: String,
+    default: null,
+    trim: true,
+    required: true,
+  },
+
+  email: {
+    type: String,
+    default: null,
+    trim: true,
+    required: false,
+  },
+
+  phone: {
+    type: String,
+    default: null,
+    trim: true,
+    required: true,
+  },
+
+  appointmentDate: {
+    type: String,
+    required: true,
+  },
+
+  problem: {
+    type: String,
+    required: true,
+    trim: true,
+  },
+
+  token: {
+    type: Number,
+    required: true,
+  },
+
+  status: {
+    type: String,
+    enum: ["waiting", "booked", "confirmed", "rescheduled", "cancelled", "completed", "missed"],
+    default: "waiting",
+  },
+
+  paymentAmount: {
+    type: Number,
+    required: true,
+  },
+
+  paymentMethod: {
+    type: String,
+    enum: ["online", "cash", null],
+    default: null,
+  },
+
+  paymentStatus: {
+    type: String,
+    enum: ["pending", "success", "failed", "refound"],
+    default: "pending",
+    trim: true,
+  },
+});
+
+const Appointment = mongoose.model("Appointment", appointmentSchema);
 export default Appointment;
