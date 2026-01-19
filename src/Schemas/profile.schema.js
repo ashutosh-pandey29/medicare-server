@@ -68,10 +68,22 @@ export const doctorProfileValidation = z.object({
                   .nonempty("To time is required")
                   .regex(timeRegex, "Invalid time format"),
               })
-              .refine((data) => toMinutes(data.to) > toMinutes(data.from), {
-                message: "End time must be after start time",
-                path: ["to"],
-              })
+              .refine(
+                (data) => {
+                  const from = toMinutes(data.from);
+                  const to = toMinutes(data.to);
+
+                  if (to > from) return true;
+
+                  const overnightDuration = 24 * 60 - from + to;
+
+                  return overnightDuration <= 12 * 60;
+                },
+                {
+                  message: "Invalid time range",
+                  path: ["to"],
+                }
+              )
           )
           .min(1, "At least one slot is required"),
       })
