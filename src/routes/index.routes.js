@@ -16,6 +16,9 @@ import doctorRoutes from "./doctor/doctor.routes.js";
 //! Admin routes for managing and verifying doctors
 import doctorRoutesOfAdmin from "./admin/doctor.routes.js";
 
+//! appointment routes
+import appointmentRoutes from "./appointment/appointment.routes.js";
+
 
 
 router.use("/auth", authRoutes);
@@ -23,6 +26,8 @@ router.use("/auth", authRoutes);
 router.use("/department", departmentRoutes);
 
 router.use("/notification", notificationRoutes);
+
+router.use("/appointment", appointmentRoutes);
 
 router.use("/doctor", doctorRoutes);
 

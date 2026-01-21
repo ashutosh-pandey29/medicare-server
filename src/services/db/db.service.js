@@ -113,4 +113,10 @@ export const db = {
     const isExist = await Model.findOne(filter);
     return !!isExist; // true / false
   },
+
+  //============= count document 
+  countDocument : async (model, filter) => {
+  const total = await model.countDocuments(filter);
+  return total;
+}
 };

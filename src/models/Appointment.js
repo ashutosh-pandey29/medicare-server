@@ -71,6 +71,10 @@ const appointmentSchema = new mongoose.Schema({
     default: "waiting",
   },
 
+  isDeleted: {
+    type: Boolean,
+    default: false,
+  },
   paymentAmount: {
     type: Number,
     required: true,
