@@ -4,6 +4,7 @@ import {
   createDoctorProfileController,
   getDoctorProfileController,
   updateDoctorProfileController,
+  getDoctorByDepartmentIdController
 } from "../../controllers/doctor/index.controller.js";
 
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
@@ -23,6 +24,8 @@ router.post(
 ); // first time
 
 router.put("/profile", authMiddleware, updateDoctorProfileController); // edit
+
+router.get("/:departmentId",  getDoctorByDepartmentIdController);
 
 /* ================= APPOINTMENTS ================= */
 

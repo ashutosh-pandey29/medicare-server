@@ -15,15 +15,17 @@ export const getAllAppointmentService = async () => {
     throw new ApiError(HTTP_CODES.NOT_FOUND, "Appointment not found");
   }
 
-  const preparedAppointmentData = {
-    appointmentId: appointment.appointmentId,
-    departmentName: appointment.departmentId.departmentName,
-    doctorName: appointment.doctorId.doctorName,
-    name: appointment.name,
-    token: appointment.token,
-    status: appointment.status,
-    appointmentDate: new Date(appointment.appointmentDate).toDateString(),
-  };
+  console.log(appointment);
+
+  const preparedAppointmentData = appointment.map((apt) => ({
+    appointmentId: apt.appointmentId,
+    departmentName: apt.departmentId?.departmentName || null,
+    doctorName: apt.doctorId?.doctorName || null,
+    name: apt.name,
+    token: apt.token,
+    status: apt.status,
+    appointmentDate: apt.appointmentDate ? new Date(apt.appointmentDate).toDateString() : null,
+  }));
 
   return {
     httpStatus: HTTP_CODES.OK,

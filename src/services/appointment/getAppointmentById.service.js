@@ -23,21 +23,24 @@ export const getAppointmentByIdService = async (appointmentId) => {
   if (!appointment) {
     throw new ApiError(HTTP_CODES.NOT_FOUND, "Appointment not found");
   }
-
   const preparedAppointmentData = {
     appointmentId: appointment.appointmentId,
-    departmentName: appointment.departmentId.departmentName,
-    doctorName: appointment.doctorId.doctorName,
+    departmentName: appointment.departmentId?.departmentName || null,
+    doctorName: appointment.doctorId?.doctorName || null,
     name: appointment.name,
     email: appointment.email,
     phone: appointment.phone,
     token: appointment.token,
     status: appointment.status,
-    appointmentDate: new Date(appointment.appointmentDate).toDateString(),
+    appointmentDate: appointment.appointmentDate
+      ? new Date(appointment.appointmentDate).toDateString()
+      : null,
     problem: appointment.problem,
-    paymentAmount: appointment.paymentAmount,
-    paymentStatus: appointment.paymentStatus,
+    paymentAmount: appointment.paymentAmount || 0,
+    paymentStatus: appointment.paymentStatus || "pending",
   };
+
+  console.log(appointment);
 
   return {
     httpStatus: HTTP_CODES.OK,

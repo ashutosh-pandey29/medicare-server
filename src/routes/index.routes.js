@@ -19,6 +19,9 @@ import doctorRoutesOfAdmin from "./admin/doctor.routes.js";
 //! appointment routes
 import appointmentRoutes from "./appointment/appointment.routes.js";
 
+//! payment routes
+
+import paymentRoutes from "./payment/payment.routes.js";
 
 
 router.use("/auth", authRoutes);
@@ -32,5 +35,7 @@ router.use("/appointment", appointmentRoutes);
 router.use("/doctor", doctorRoutes);
 
 router.use("/admin", doctorRoutesOfAdmin);
+
+router.use("/payment", paymentRoutes);
 
 export default router;

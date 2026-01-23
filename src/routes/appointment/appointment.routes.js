@@ -30,37 +30,18 @@ router.get(
 // //! add new appointment
 router.post("/new", optionalAuth, newAppointmentController);
 
-// //! update status and appointment info , access level : user ,doctor
-router.put(
-  "/update/:appointmentId",
-  authMiddleware,
-  authorizedRole("user", "doctor"),
-  updateAppointmentController
-);
+// //! get data for update appointment
+// router.get("/update/:appointmentId" , authMiddleware ,  authorizedRole("user") ,  getUpdateAppointmentController)
+
+// //! update appointment
+router.put( "/update/:appointmentId", authMiddleware,  authorizedRole("user", "doctor"), updateAppointmentController);
 
 // //! delete appointment , access level : user
-router.delete(
-  "/delete/:appointmentId",
-  authMiddleware,
-  authorizedRole("user"),
-  deleteAppointmentController
-);
+router.delete( "/delete/:appointmentId", authMiddleware, authorizedRole("user"), deleteAppointmentController);
 
-// //! get appointment by specific doctor , access level : doctor , admin
-router.get(
-  "/doctor/:doctorId",
-  authMiddleware,
-  authorizedRole("doctor"),
-  getAppointmentsByDoctorController
-);
+// //! get appointment by specific doctor , access level : doctor 
+router.get( "/doctor/:doctorId", authMiddleware,  authorizedRole("doctor"),  getAppointmentsByDoctorController);
 
-// //! Get appointments for a specific patient , access level : doctor , user
-router.get(
-  "/patient/:patientId",
-  authMiddleware,
-  authorizedRole("doctor"),
-  getAppointmentsByPatientController
-);
 
 // //! Get upcoming appointments (user dashboard);
 router.get("/upcoming", authMiddleware, authorizedRole("user"), getUpcomingAppointmentsController);

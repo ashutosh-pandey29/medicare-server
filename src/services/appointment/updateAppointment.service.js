@@ -17,7 +17,7 @@ export const updateAppointmentService = async (payload, user, appointmentId) => 
 
   // check role (user not allowed to change status)
   if (user.role === "user") {
-    throw new ApiError(HTTP_CODES.FORBIDDEN, "You hve no permission to perform this action");
+    throw new ApiError(HTTP_CODES.FORBIDDEN, "You have no permission to perform this action");
   }
 
   // if booking date change (status reschedule)
