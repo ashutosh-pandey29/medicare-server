@@ -11,7 +11,7 @@ const instance = new Razorpay({
 });
 
 export const createPaymentService = async (appointmentId) => {
-  if (appointmentId) {
+  if (!appointmentId) {
     throw new ApiError(HTTP_CODES.NOT_FOUND, "Appointment Id not found");
   }
 

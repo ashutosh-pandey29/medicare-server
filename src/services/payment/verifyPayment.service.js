@@ -1,14 +1,23 @@
+import { env } from "../../config/env.js";
 import Appointment from "../../models/Appointment.js";
 import Payment from "../../models/Payment.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
 import { db } from "../db/db.service.js";
+import crypto from "crypto";
+import Razorpay from "razorpay";
+
+const instance = new Razorpay({
+  key_id: env.RAZORPAY_KEY_ID,
+  key_secret: env.RAZORPAY_SECRET,
+});
 
 export const verifyPaymentService = async (
   razorpay_order_id,
   razorpay_payment_id,
   razorpay_signature,
-  appointmentId
+  appointmentId,
+  user
 ) => {
   const sign = razorpay_order_id + "|" + razorpay_payment_id;
   const expectedSign = crypto
@@ -30,10 +39,11 @@ export const verifyPaymentService = async (
     const payment = await instance.payments.fetch(razorpay_payment_id);
     const paymentMethod = payment.method;
 
+console.log(user);
     const paymentData = {
-      userId: req.user.userId || null,
+      userId: user?.userId || null,
       appointmentId: appointment._id,
-      userName: req.user.username || null,
+      userName: user?.username || null,
       userPhone: appointment.phone,
       transactionId: razorpay_payment_id,
       amount: appointment.paymentAmount,
