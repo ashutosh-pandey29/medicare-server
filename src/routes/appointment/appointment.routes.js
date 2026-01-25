@@ -8,8 +8,8 @@ import {
   getUpcomingAppointmentsController,
   newAppointmentController,
   updateAppointmentController,
-  getAppointmentsByPatientController,
   getAppointmentByIdController,
+  cancelAppointmentController,
 } from "../../controllers/appointment/index.controller.js";
 
 import { optionalAuth } from "../../middlewares/optionalAuth.middleware.js";
@@ -34,14 +34,36 @@ router.post("/new", optionalAuth, newAppointmentController);
 // router.get("/update/:appointmentId" , authMiddleware ,  authorizedRole("user") ,  getUpdateAppointmentController)
 
 // //! update appointment
-router.put( "/update/:appointmentId", authMiddleware,  authorizedRole("user", "doctor"), updateAppointmentController);
+router.put(
+  "/update/:appointmentId",
+  authMiddleware,
+  authorizedRole("user", "doctor"),
+  updateAppointmentController
+);
+
+// //! cancel appointment
+router.put(
+  "/cancel/:appointmentId",
+  authMiddleware,
+  authorizedRole("user", "doctor"),
+  cancelAppointmentController
+);
 
 // //! delete appointment , access level : user
-router.delete( "/delete/:appointmentId", authMiddleware, authorizedRole("user"), deleteAppointmentController);
+router.delete(
+  "/delete/:appointmentId",
+  authMiddleware,
+  authorizedRole("user"),
+  deleteAppointmentController
+);
 
-// //! get appointment by specific doctor , access level : doctor 
-router.get( "/doctor/:doctorId", authMiddleware,  authorizedRole("doctor"),  getAppointmentsByDoctorController);
-
+// //! get appointment by specific doctor , access level : doctor
+router.get(
+  "/doctor/:doctorId",
+  authMiddleware,
+  authorizedRole("doctor"),
+  getAppointmentsByDoctorController
+);
 
 // //! Get upcoming appointments (user dashboard);
 router.get("/upcoming", authMiddleware, authorizedRole("user"), getUpcomingAppointmentsController);
