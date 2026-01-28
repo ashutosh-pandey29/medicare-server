@@ -5,9 +5,7 @@ export const updateAppointmentController = async (req, res, next) => {
   try {
     const payload = req.body;
     const user = req.user;
-    const { appointmentId } = req.params;
-
-    console.log(appointmentId);
+    const { appointmentId } = req.body;
 
     const serviceResponse = await updateAppointmentService(payload, user, appointmentId);
 

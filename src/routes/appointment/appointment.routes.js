@@ -10,6 +10,7 @@ import {
   updateAppointmentController,
   getAppointmentByIdController,
   cancelAppointmentController,
+  getTodayConsultAppointmentsController,
 } from "../../controllers/appointment/index.controller.js";
 
 import { optionalAuth } from "../../middlewares/optionalAuth.middleware.js";
@@ -27,6 +28,16 @@ router.get(
   getAppointmentByIdController
 ); // full
 
+
+// //! Get today's appointments for consultation (doctor)
+router.get(
+  "/consultant",
+  authMiddleware,
+  authorizedRole("doctor"),
+  getTodayConsultAppointmentsController
+);
+
+
 // //! add new appointment
 router.post("/new", optionalAuth, newAppointmentController);
 
@@ -35,7 +46,7 @@ router.post("/new", optionalAuth, newAppointmentController);
 
 // //! update appointment
 router.put(
-  "/update/:appointmentId",
+  "/update",
   authMiddleware,
   authorizedRole("user", "doctor"),
   updateAppointmentController
@@ -58,12 +69,7 @@ router.delete(
 );
 
 // //! get appointment by specific doctor , access level : doctor
-router.get(
-  "/doctor/:doctorId",
-  authMiddleware,
-  authorizedRole("doctor"),
-  getAppointmentsByDoctorController
-);
+router.get("/doctor", authMiddleware, authorizedRole("doctor"), getAppointmentsByDoctorController);
 
 // //! Get upcoming appointments (user dashboard);
 router.get("/upcoming", authMiddleware, authorizedRole("user"), getUpcomingAppointmentsController);
