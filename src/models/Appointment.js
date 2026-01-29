@@ -50,7 +50,7 @@ const appointmentSchema = new mongoose.Schema({
   },
 
   appointmentDate: {
-    type: String,
+    type: Date,
     required: true,
   },
 
@@ -67,7 +67,16 @@ const appointmentSchema = new mongoose.Schema({
 
   status: {
     type: String,
-    enum: ["waiting", "booked", "confirmed", "rejected" , "rescheduled", "cancelled", "completed", "missed"],
+    enum: [
+      "waiting",
+      "booked",
+      "confirmed",
+      "rejected",
+      "rescheduled",
+      "cancelled",
+      "completed",
+      "missed",
+    ],
     default: "waiting",
   },
 

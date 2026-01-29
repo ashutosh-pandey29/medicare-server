@@ -18,8 +18,10 @@ export const getUpcomingAppointmentService = async (userId) => {
     userId: userId,
     status: "confirmed",
     isDeleted: false,
-    appointmentDate: { $gt: today },
+    appointmentDate: { $gte : today },
   });
+
+  console.log(today);
 
   if (upcomingAppointments.length === 0) {
     throw new ApiError(HTTP_CODES.NOT_FOUND, "No Upcoming appointment");

@@ -3,8 +3,7 @@ import { respond } from "../../utils/respond.js";
 
 export const getUpcomingAppointmentsController = async (req, res, next) => {
   try {
-    // const userId = req.user?.userId || null;
-    const userId = "6940ebede37ed4289fbe02a2";
+    const userId = req.user?.userId || null;
     const serviceResponse = await getUpcomingAppointmentService(userId);
 
     respond.success(res, serviceResponse);
