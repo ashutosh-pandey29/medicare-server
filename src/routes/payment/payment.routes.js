@@ -4,16 +4,19 @@ import {
   verifyPaymentController,
   getPaymentByIdController,
   getPaymentController,
+  downloadInvoiceController
 } from "../../controllers/payment/index.controller.js";
 import { optionalAuth } from "../../middlewares/optionalAuth.middleware.js";
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
 const router = express.Router();
 
-router.get("/details", getPaymentController); // sort info
+router.get("/details", authMiddleware, getPaymentController); // sort info
 router.get("/details/:paymentId", getPaymentByIdController); // full info
 
 router.post("/create-order", authMiddleware, createPaymentController);
 router.post("/verify-payment", authMiddleware, verifyPaymentController);
+
+router.get("/download-invoice/:paymentId",authMiddleware,  downloadInvoiceController);
 
 // router.get("/stats", paymentStatsController);
 
