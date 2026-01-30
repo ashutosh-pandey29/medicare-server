@@ -11,6 +11,7 @@ import {
   getAppointmentByIdController,
   cancelAppointmentController,
   getTodayConsultAppointmentsController,
+  appointmentStatsController,
 } from "../../controllers/appointment/index.controller.js";
 
 import { optionalAuth } from "../../middlewares/optionalAuth.middleware.js";
@@ -28,7 +29,6 @@ router.get(
   getAppointmentByIdController
 ); // full
 
-
 // //! Get today's appointments for consultation (doctor)
 router.get(
   "/consultant",
@@ -36,7 +36,6 @@ router.get(
   authorizedRole("doctor"),
   getTodayConsultAppointmentsController
 );
-
 
 // //! add new appointment
 router.post("/new", optionalAuth, newAppointmentController);
@@ -75,6 +74,6 @@ router.get("/doctor", authMiddleware, authorizedRole("doctor"), getAppointmentsB
 router.get("/upcoming", authMiddleware, authorizedRole("user"), getUpcomingAppointmentsController);
 
 // //! Get appointment stats (total appointments, pending, completed, cancelled) ,  access level : admin ,  doctor ,  user
-// router.get("/stats", appointmentStatsController);
+router.get("/stats", authMiddleware, authorizedRole("user"), appointmentStatsController);
 
 export default router;

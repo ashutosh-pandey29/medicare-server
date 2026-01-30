@@ -10,6 +10,7 @@ import {
   refreshTokenController,
   updatePasswordController,
   continueWithGoogleController,
+  deleteAccountController,
 } from "../../controllers/auth/index.controller.js";
 
 import { payloadValidator } from "../../middlewares/validator.middleware.js";
@@ -62,6 +63,11 @@ router.put(
 
 //! Logout the currently authenticated user
 router.post("/logout", authMiddleware, logoutController); // Protected: Deletes refresh token and clears cookie
+
+
+//! DELETE user / doctor account 
+router.post("/delete" ,  authMiddleware ,  deleteAccountController);
+
 
 // -------------------- SOCIAL LOGIN --------------------
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] })); // Public

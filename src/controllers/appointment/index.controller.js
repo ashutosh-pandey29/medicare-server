@@ -6,5 +6,6 @@ export { getUpcomingAppointmentsController } from "./getUpcomingAppointment.cont
 export { newAppointmentController } from "./newAppointment.controller.js";
 export { updateAppointmentController } from "./updateAppointment.controller.js";
 export { getAppointmentByIdController } from "./getAppointmentById.controller.js";
-export {cancelAppointmentController} from "./cancelAppointment.controller.js";
-export {getTodayConsultAppointmentsController} from "./getTodayConsultAppointments.controller.js"
+export { cancelAppointmentController } from "./cancelAppointment.controller.js";
+export { getTodayConsultAppointmentsController } from "./getTodayConsultAppointments.controller.js";
+export { appointmentStatsController } from "./appointmentStats.controller.js";
