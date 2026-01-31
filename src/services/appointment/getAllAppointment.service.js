@@ -3,13 +3,19 @@ import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
 import { db } from "../db/db.service.js";
 
-export const getAllAppointmentService = async () => {
+export const getAllAppointmentService = async (userId) => {
   // fetch appointment by appointment id
 
-  const appointment = await db.fetchManyWithPopulate(Appointment, { isDeleted: false }, "", [
-    { path: "departmentId", select: "departmentName" },
-    { path: "doctorId", select: "doctorName" },
-  ]);
+  const appointment = await db.fetchManyWithPopulate(
+    Appointment,
+    { userId },
+    { isDeleted: false },
+    "",
+    [
+      { path: "departmentId", select: "departmentName" },
+      { path: "doctorId", select: "doctorName" },
+    ]
+  );
 
   if (!appointment) {
     throw new ApiError(HTTP_CODES.NOT_FOUND, "Appointment not found");
