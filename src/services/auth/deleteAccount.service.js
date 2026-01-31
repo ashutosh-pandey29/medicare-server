@@ -11,9 +11,13 @@ export const deleteAccountService = async (user) => {
   // check role and take action on account
 
   if (user.role === "user") {
-    // make user inactive for 72 hr and after 72 hr delete user (soft delete)
+    // make user inactive for 7  and after 72 hr delete user (soft delete)
 
-    const isInactive = await db.updateOne(User, { _id: user.userId }, { status: "inactive" });
+    const isInactive = await db.updateOne(
+      User,
+      { _id: user.userId },
+      { isActive: false, deactivatedAt: new Date() }
+    );
 
     if (isInactive) {
       // logout user

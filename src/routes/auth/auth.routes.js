@@ -66,7 +66,7 @@ router.post("/logout", authMiddleware, logoutController); // Protected: Deletes 
 
 
 //! DELETE user / doctor account 
-router.post("/delete" ,  authMiddleware ,  deleteAccountController);
+router.put("/delete" ,  authMiddleware ,  deleteAccountController);
 
 
 // -------------------- SOCIAL LOGIN --------------------

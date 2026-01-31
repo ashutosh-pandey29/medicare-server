@@ -21,6 +21,38 @@ export const loginService = async (data) => {
     throw new ApiError(HTTP_CODES.BAD_REQUEST, AUTH_MESSAGES.INVALID_CREDENTIALS);
   }
 
+  //  ACCOUNT INACTIVE CHECK
+
+  if (!user.isActive) {
+    const now = new Date();
+    const d = (now - user.deactivatedAt) / (1000 * 60 * 60 * 24);
+
+    if (d <= 7) {
+      // re-active user
+
+      const isReactivated = await db.updateOne(
+        User,
+        { _id: user._id },
+        {
+          $set: {
+            isActive: true,
+            deactivatedAt: null,
+          },
+        }
+      );
+
+      if (!isReactivated) {
+        throw new ApiError(
+          HTTP_CODES.INTERNAL_SERVER_ERROR,
+          "Your account can't be reactivated please try again letter."
+        );
+      }
+    } else {
+      // after 7 day deleted
+      throw new ApiError(HTTP_CODES.FORBIDDEN, "Your account is deleted");
+    }
+  }
+
   // Check if email is verified
   if (!user.isEmailVerified) {
     throw new ApiError(HTTP_CODES.BAD_REQUEST, AUTH_MESSAGES.EMAIL_NOT_VERIFIED);
@@ -70,7 +102,7 @@ export const loginService = async (data) => {
   const payload = {
     userId: user._id,
     role: user.role,
-    username:user.username,
+    username: user.username,
   };
 
   // generate access  token

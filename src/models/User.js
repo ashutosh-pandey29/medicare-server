@@ -48,10 +48,14 @@ const userDBSchema = new mongoose.Schema(
       },
     },
 
-    status: {
-      type: String,
-      enum: ["active", "inactive"],
-      default: "active",
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
+
+    deactivatedAt: {
+      type: Date,
+      default: null,
     },
 
     emailVerificationToken: {
