@@ -9,3 +9,4 @@ export { getAppointmentByIdController } from "./getAppointmentById.controller.js
 export { cancelAppointmentController } from "./cancelAppointment.controller.js";
 export { getTodayConsultAppointmentsController } from "./getTodayConsultAppointments.controller.js";
 export { appointmentStatsController } from "./appointmentStats.controller.js";
+export {getAllPatientByDoctorController} from "./getAllPatientByDoctor.controller.js";

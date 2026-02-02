@@ -12,6 +12,7 @@ import {
   cancelAppointmentController,
   getTodayConsultAppointmentsController,
   appointmentStatsController,
+  getAllPatientByDoctorController,
 } from "../../controllers/appointment/index.controller.js";
 
 import { optionalAuth } from "../../middlewares/optionalAuth.middleware.js";
@@ -69,6 +70,8 @@ router.delete(
 
 // //! get appointment by specific doctor , access level : doctor
 router.get("/doctor", authMiddleware, authorizedRole("doctor"), getAppointmentsByDoctorController);
+
+router.get("/doctor/patient" ,  authMiddleware ,  authorizedRole("doctor") ,  getAllPatientByDoctorController)
 
 // //! Get upcoming appointments (user dashboard);
 router.get("/upcoming", authMiddleware, authorizedRole("user"), getUpcomingAppointmentsController);

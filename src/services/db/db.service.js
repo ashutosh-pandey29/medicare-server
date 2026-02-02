@@ -114,9 +114,16 @@ export const db = {
     return !!isExist; // true / false
   },
 
-  //============= count document 
-  countDocument : async (model, filter) => {
-  const total = await model.countDocuments(filter);
-  return total;
-}
+  //============= count document
+  countDocument: async (model, filter) => {
+    const total = await model.countDocuments(filter);
+    return total;
+  },
+
+  //============ aggregate functionality
+
+  aggregate: async (model, pipeline = [], options) => {
+    const res = await model.aggregate(pipeline).option(options);
+    return res;
+  },
 };
