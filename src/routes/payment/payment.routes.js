@@ -4,11 +4,17 @@ import {
   verifyPaymentController,
   getPaymentByIdController,
   getPaymentController,
-  downloadInvoiceController
+  downloadInvoiceController,
+  getAllPaymentController
 } from "../../controllers/payment/index.controller.js";
 import { optionalAuth } from "../../middlewares/optionalAuth.middleware.js";
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
 const router = express.Router();
+
+
+// all payment for admin 
+
+router.get("/all", authMiddleware,  getAllPaymentController); 
 
 router.get("/details", authMiddleware, getPaymentController); // sort info
 router.get("/details/:paymentId", getPaymentByIdController); // full info
