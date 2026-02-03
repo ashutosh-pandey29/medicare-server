@@ -3,8 +3,8 @@ import { respond } from "../../utils/respond.js";
 
 export const appointmentStatsController = async (req, res, next) => {
   try {
-    const userId = req.user.userId;
-    const serviceResponse = await appointmentStatsService(userId);
+    const user = req.user;
+    const serviceResponse = await appointmentStatsService(user);
 
     respond.success(res, serviceResponse);
   } catch (err) {

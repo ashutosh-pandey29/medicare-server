@@ -71,12 +71,22 @@ router.delete(
 // //! get appointment by specific doctor , access level : doctor
 router.get("/doctor", authMiddleware, authorizedRole("doctor"), getAppointmentsByDoctorController);
 
-router.get("/doctor/patient" ,  authMiddleware ,  authorizedRole("doctor") ,  getAllPatientByDoctorController)
+router.get(
+  "/doctor/patient",
+  authMiddleware,
+  authorizedRole("doctor"),
+  getAllPatientByDoctorController
+);
 
 // //! Get upcoming appointments (user dashboard);
 router.get("/upcoming", authMiddleware, authorizedRole("user"), getUpcomingAppointmentsController);
 
 // //! Get appointment stats (total appointments, pending, completed, cancelled) ,  access level : admin ,  doctor ,  user
-router.get("/stats", authMiddleware, authorizedRole("user"), appointmentStatsController);
+router.get(
+  "/stats",
+  authMiddleware,
+  authorizedRole("user", "doctor", "admin"),
+  appointmentStatsController
+);
 
 export default router;
