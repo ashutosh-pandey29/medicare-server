@@ -28,6 +28,7 @@ export const getDoctorProfileService = async (userId) => {
     doctorName: doctor.doctorName,
     phone: doctor.phone,
     gender: doctor.gender,
+    departmentId:doctor.departmentId._id,
     department: doctor.departmentId ? doctor.departmentId.departmentName : null,
     experience: doctor.experience,
     bio: doctor.bio,
