@@ -23,6 +23,8 @@ import appointmentRoutes from "./appointment/appointment.routes.js";
 
 import paymentRoutes from "./payment/payment.routes.js";
 
+//! stats routes
+import statsRoutes from "./admin/stats.routes.js";
 
 router.use("/auth", authRoutes);
 
@@ -37,5 +39,7 @@ router.use("/doctor", doctorRoutes);
 router.use("/admin", doctorRoutesOfAdmin);
 
 router.use("/payment", paymentRoutes);
+
+router.use("/stats", statsRoutes);
 
 export default router;
