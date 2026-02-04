@@ -6,6 +6,7 @@ import { authorizedRole } from "../../middlewares/role.middleware.js";
 import {
   getDoctorByIdController,
   getDoctorController,
+  rollbackDoctorController,
   verifyDoctorProfileController,
 } from "../../controllers/admin/index.controller.js";
 
@@ -21,5 +22,7 @@ router.patch(
 
   verifyDoctorProfileController
 );
+
+router.patch("/doctor/:userId/rollback", rollbackDoctorController);
 
 export default router;
