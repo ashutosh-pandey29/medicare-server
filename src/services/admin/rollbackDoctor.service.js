@@ -15,18 +15,29 @@ export const rollbackDoctorService = async (userId) => {
     throw new ApiError(HTTP_CODES.NOT_FOUND, "Doctor profile not found for this user.");
   }
 
-  const isUpdated = await db.updateOne(User, { _id: doctor.userId }, { role: "user" });
+  const isRoleUpdated = await db.updateOne(User, { _id: doctor.userId }, { role: "user" });
 
-  if (!isUpdated) {
+  if (!isRoleUpdated) {
     throw new ApiError(
       HTTP_CODES.INTERNAL_SERVER_ERROR,
       "Failed to rollback doctor role. Please try again."
     );
   }
 
+  // delete doctor profile
+
+  const isProfileDeleted = await db.updateOne(Doctor, { _id: userId }, { isDeleted: true });
+
+  if (!isProfileDeleted) {
+    throw new ApiError(
+      HTTP_CODES.INTERNAL_SERVER_ERROR,
+      "Role reverted but failed to deactivate doctor profile."
+    );
+  }
+
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Doctor role successfully reverted to user.",
+    message: "Doctor role rolled back and profile deactivated successfully.",
     data: null,
   };
 };

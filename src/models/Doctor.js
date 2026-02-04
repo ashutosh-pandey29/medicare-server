@@ -87,7 +87,7 @@ const doctorSchema = new mongoose.Schema(
       default: false,
     },
 
-    isIdCardIssued: {
+    isDeleted: {
       type: Boolean,
       default: false,
     },

@@ -7,7 +7,7 @@ import { db } from "../db/db.service.js";
 export const getDoctorService = async () => {
   const doctors = await db.fetchManyWithPopulate(
     Doctor,
-    {},
+    {isDeleted:false},
     "profileId ,  isVerified , doctorName",
     [{ path: "departmentId", select: "departmentName" }]
   );
