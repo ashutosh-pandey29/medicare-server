@@ -52,7 +52,6 @@ export const getPatientGraphService = async () => {
       $group: {
         _id: {
           year: { $year: "$createdAt" },
-          month: { $month: "$createdAt" },
         },
         total: { $sum: 1 }, // count patients
       },
@@ -61,7 +60,6 @@ export const getPatientGraphService = async () => {
       $project: {
         _id: 0,
         year: "$_id.year",
-        month: "$_id.month",
         total: 1,
       },
     },
