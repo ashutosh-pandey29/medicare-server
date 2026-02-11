@@ -15,8 +15,13 @@ import { pushNotification } from "../webpush/pushNotification.js";
 
 export const registerService = async (data) => {
   // Destructuring values from the incoming request data.
-
   const { username, email, password, role } = data;
+
+  // check already exist data or not
+  const existingUser = await db.exists(User, { email });
+  if (existingUser) {
+    throw new ApiError(HTTP_CODES.CONFLICT, AUTH_MESSAGES.ALREADY_EXISTS);
+  }
 
   // hashed password - calling pre defined hashPassword() method
   const hashedPassword = await hashPassword(password);
@@ -36,16 +41,17 @@ export const registerService = async (data) => {
   };
 
   let createdUser;
-
   try {
     // Store the user in the database if they don't already exist
     createdUser = await db.createOne(User, formData);
 
     // Generate verification URL
     const verificationUrl = `${env.FRONTEND_URL}/auth/verify-email?token=${emailVerificationToken}`;
+
     // generate verification template
     const verificationEmailTemplate = verificationTemplate(username, verificationUrl);
-    //calling mail sender ,
+
+    //calling mail sender  to send verification link
     await mailTo({
       to: email,
       subject: "Verify Your Account - Medicare Hospital",
@@ -58,14 +64,16 @@ export const registerService = async (data) => {
 
     throw new ApiError({
       statusCode: HTTP_CODES.INTERNAL_SERVER_ERROR,
-      message: "Registration failed. Please try again.",
+      message: AUTH_MESSAGES.REGISTRATION_FAILED,
     });
   }
 
-  // notify admin when new user registered via socket
+  // notify admin when new user registered
   const admin = await db.fetchOne(User, { role: "admin" });
   if (admin) {
     const now = new Date();
+
+    // Notification payload for realtime socket
     const notificationPayload = {
       title: NOTIFICATION_MESSAGE.NEW_ACCOUNT,
       message: `${username} registered on ${now.toLocaleString()}`,
@@ -74,11 +82,10 @@ export const registerService = async (data) => {
       createdAt: now,
     };
 
-    // socket notification
+    // Send realtime socket notification
     await notifyRealtime(admin?._id, notificationPayload);
 
-    // notify admin via web push
-
+    //Web Push Notification (if admin subscribed)
     const adminSubscription = await db.fetchOne(Subscription, { role: "admin" });
 
     if (adminSubscription) {
@@ -88,8 +95,7 @@ export const registerService = async (data) => {
         url: "dashboard/admin/notifications",
       };
 
-      // console.log(adminSubscription)
-
+      // send web push
       await pushNotification(
         { endpoint: adminSubscription.endpoint, keys: adminSubscription.keys },
         pushPayload
@@ -97,6 +103,7 @@ export const registerService = async (data) => {
     }
   }
 
+  // final response
   return {
     statusCode: HTTP_CODES.CREATED,
     message: AUTH_MESSAGES.REGISTRATION_SUCCESS,
