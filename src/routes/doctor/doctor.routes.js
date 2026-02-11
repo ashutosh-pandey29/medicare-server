@@ -19,7 +19,7 @@ import { authMiddleware } from "../../middlewares/auth.middleware.js";
 // Import request payload validation middleware
 import { payloadValidator } from "../../middlewares/validator.middleware.js";
 
-// Import doctor profile validation schema (Zod/etc.)
+// Import doctor profile validation schema (Zod)
 import { doctorProfileValidation } from "../../Schemas/profile.schema.js";
 
 // Import role-based authorization middleware
