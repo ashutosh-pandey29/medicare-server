@@ -1,3 +1,4 @@
+// Import required modules and helpers
 import User from "../../models/User.js";
 import { db } from "../db/db.service.js";
 import { generateJwtToken } from "../../helpers/jwt.helper.js";
@@ -8,8 +9,11 @@ import { verifyPassword } from "../../helpers/password.helper.js";
 import { env } from "../../config/env.js";
 
 export const loginService = async (data) => {
+  // Configuration constants
   const REFRESH_TOKEN_EXPIRY_DAYS = 30;
   const MAX_LOGIN_ATTEMPTS = 3;
+
+  // Extract login credentials
   const { login_id, password } = data;
 
   // Find user by username OR email, include password field
@@ -21,15 +25,14 @@ export const loginService = async (data) => {
     throw new ApiError(HTTP_CODES.BAD_REQUEST, AUTH_MESSAGES.INVALID_CREDENTIALS);
   }
 
-  //  ACCOUNT INACTIVE CHECK
+  //============== ACCOUNT INACTIVE CHECK=====================
 
   if (!user.isActive) {
     const now = new Date();
     const d = (now - user.deactivatedAt) / (1000 * 60 * 60 * 24);
 
     if (d <= 7) {
-      // re-active user
-
+      // Reactivate account if within 7 days
       const isReactivated = await db.updateOne(
         User,
         { _id: user._id },
@@ -44,11 +47,11 @@ export const loginService = async (data) => {
       if (!isReactivated) {
         throw new ApiError(
           HTTP_CODES.INTERNAL_SERVER_ERROR,
-          "Your account can't be reactivated please try again letter."
+          AUTH_MESSAGES.ACCOUNT_REACTIVATION_FAILED
         );
       }
     } else {
-      // after 7 day deleted
+      // Permanently deleted after 7 days
       throw new ApiError(HTTP_CODES.FORBIDDEN, "Your account is deleted");
     }
   }
@@ -68,6 +71,8 @@ export const loginService = async (data) => {
     throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, "Password not found for user");
   }
 
+  // ================= PASSWORD VERIFICATION =================
+
   // verify password
   const isPasswordVerify = await verifyPassword(password, user.password);
 
@@ -86,7 +91,7 @@ export const loginService = async (data) => {
       };
       await db.updateOne(User, filter, value);
     } else {
-      // update attempts
+      // Update login attempt count
       await db.updateOne(User, { _id: user._id }, { $set: { loginAttempts: updatedAttempts } });
     }
 
@@ -97,6 +102,9 @@ export const loginService = async (data) => {
       `${AUTH_MESSAGES.INVALID_CREDENTIALS}.Attempts let : ${attemptsLeft}`
     );
   }
+
+  // ================= JWT TOKEN GENERATION =================
+
 
   // Prepare payload for JWT token
   const payload = {
@@ -115,6 +123,14 @@ export const loginService = async (data) => {
     env.JWT_REFRESH_TOKEN_EXPIRES
   );
 
+
+  // Ensure tokens were generated
+  if (!accessToken || !refreshToken) {
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, AUTH_MESSAGES.INTERNAL_SERVER_ERROR);
+  }
+
+
+  // Store refresh token in database
   await db.updateOne(
     User,
     { _id: user._id },
@@ -128,11 +144,7 @@ export const loginService = async (data) => {
     }
   );
 
-  // Ensure tokens were generated
-  if (!accessToken || !refreshToken) {
-    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, AUTH_MESSAGES.INTERNAL_SERVER_ERROR);
-  }
-
+  
   // Reset login attempts after successful login
   await db.updateOne(
     User,

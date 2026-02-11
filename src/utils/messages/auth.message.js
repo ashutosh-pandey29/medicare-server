@@ -28,6 +28,8 @@ export const AUTH_MESSAGES = {
   PASSWORD_RESET_EMAIL_SENT: "Password reset email sent",
   PASSWORD_RESET_SUCCESS: "Password reset successfully",
   RESET_TOKEN_INVALID: "Invalid or expired reset token",
+  ACCOUNT_REACTIVATION_FAILED:"Your account can't be reactivated please try again letter.",
+
 
   /* ===== PROFILE ===== */
   PROFILE_FETCHED: "User profile fetched successfully",
