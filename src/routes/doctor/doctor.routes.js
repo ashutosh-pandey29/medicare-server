@@ -4,41 +4,40 @@ import {
   createDoctorProfileController,
   getDoctorProfileController,
   updateDoctorProfileController,
-  getDoctorByDepartmentIdController
+  getDoctorByDepartmentIdController,
 } from "../../controllers/doctor/index.controller.js";
 
 import { authMiddleware } from "../../middlewares/auth.middleware.js";
 import { payloadValidator } from "../../middlewares/validator.middleware.js";
 import { doctorProfileValidation } from "../../Schemas/profile.schema.js";
+import { authorizedRole } from "../../middlewares/role.middleware.js";
 /* ================= DOCTOR PROFILE ================= */
 
 // get own profile
-router.get("/me", authMiddleware, getDoctorProfileController);
+router.get("/me", authMiddleware, authorizedRole("doctor"), getDoctorProfileController);
 
 // create  profile
 router.post(
   "/profile",
   authMiddleware,
+  authorizedRole("doctor"),
   payloadValidator(doctorProfileValidation),
   createDoctorProfileController
 ); // first time
 
-router.put("/profile", authMiddleware, updateDoctorProfileController); // edit
+router.put(
+  "/profile",
+  authMiddleware,
+  authorizedRole("doctor"),
+  payloadValidator(doctorProfileValidation),
+  updateDoctorProfileController
+); // edit
 
-router.get("/:departmentId",  getDoctorByDepartmentIdController);
-
-/* ================= APPOINTMENTS ================= */
-
-// router.get("/appointments", getDoctorAppointmentsController); //list - sort detail
-// router.get("/appointments/:appointmentId", getDoctorAppointmentByIdController); // view - full details
-
-/* ================= PATIENTS ================= */
-
-// router.get("/patients", getDoctorPatientsController); //list - sort detail
-// router.get("/patients/:patientId", getDoctorPatientByIdController); //view -> full details
-
-// create report
-
-// router.post("/patients/:patientId/reports", createMedicalReportController);
+router.get(
+  "/:departmentId",
+  authMiddleware,
+  authorizedRole("doctor"),
+  getDoctorByDepartmentIdController
+);
 
 export default router;
