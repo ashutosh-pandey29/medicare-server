@@ -1,19 +1,20 @@
+// Import bcrypt library for password hashing
 import bcrypt from "bcrypt";
 
-// hash password
+// HASH PASSWORD
 export const hashPassword = async (rowPassword) => {
   const round = 10;
   const hashedPassword = await bcrypt.hash(rowPassword, round);
   return hashedPassword;
 };
 
-// verify password
-
+// VERIFY PASSWORD
 export const verifyPassword = async (rowPassword, hashedPassword) => {
   const isVerified = await bcrypt.compare(rowPassword, hashedPassword);
   return isVerified;
 };
 
+// GENERATE STRONG RANDOM PASSWORD
 export const generateStrongPassword = (length = 10) => {
   const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
   const numbers = "0123456789";

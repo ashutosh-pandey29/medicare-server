@@ -3,15 +3,11 @@ const router = express.Router();
 
 import {
   deleteDepartmentController,
-  departmentStatsController,
-  getDepartmentRevenueController,
-  getDoctorsByDepartmentController,
   newDepartmentController,
   updateDepartmentController,
-  getPatientsByDepartmentController,
   getAllDepartmentController,
   getPublicDepartmentsController,
-  getDepartmentByIdController
+  getDepartmentByIdController,
 } from "../../controllers/department/index.controller.js";
 
 import { payloadValidator } from "../../middlewares/validator.middleware.js";
@@ -27,7 +23,7 @@ router.get("/all", authMiddleware, authorizedRole("admin"), getAllDepartmentCont
 
 //! GET DEPARTMENT BY ID
 
-router.get("/:departmentId" ,  authMiddleware ,  authorizedRole("admin") ,  getDepartmentByIdController)
+router.get("/:departmentId", authMiddleware, authorizedRole("admin"), getDepartmentByIdController);
 
 //! Add a new department ,  access level:admin
 router.post(
@@ -53,33 +49,6 @@ router.delete(
   authMiddleware,
   authorizedRole("admin"),
   deleteDepartmentController
-);
-
-//! Get stats for all departments (total doctors, total patients)  ,  access level:admin
-router.get("/stats", authMiddleware, authorizedRole("admin"), departmentStatsController);
-
-//! Get doctors in a specific department , access level:admin
-router.get(
-  "/:departmentId/doctors",
-  authMiddleware,
-  authorizedRole("admin"),
-  getDoctorsByDepartmentController
-);
-
-//! Get patients in a specific department , access level:admin
-router.get(
-  "/:departmentId/patients",
-  authMiddleware,
-  authorizedRole("admin"),
-  getPatientsByDepartmentController
-);
-
-//! Get total revenue for a department ,access level:admin
-router.get(
-  "/:departmentId/revenue",
-  authMiddleware,
-  authorizedRole("admin"),
-  getDepartmentRevenueController
 );
 
 export default router;

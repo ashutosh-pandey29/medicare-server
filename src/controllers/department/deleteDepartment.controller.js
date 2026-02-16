@@ -7,7 +7,7 @@ export const deleteDepartmentController = async (req, res, next) => {
 
     const forceDelete = req.query.force === "true";
 
-    console.log(req.params);
+    // console.log(req.params);
     const response = await deleteDepartmentService({ departmentId, forceDelete });
     respond.success(res, response);
   } catch (err) {

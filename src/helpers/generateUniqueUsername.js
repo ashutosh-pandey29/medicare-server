@@ -1,3 +1,4 @@
+//! Function to generate a unique username based on display name
 export const generateUniqueUsername = (displayName) => {
   const length = 4;
   let normalizedUsername = (displayName || "user")
@@ -7,8 +8,6 @@ export const generateUniqueUsername = (displayName) => {
     .replace(/[^a-z0-9]/g, ""); // ONLY a-z & 0-9
 
   let randomDigit = Math.floor(Math.pow(10, length - 1) + Math.random() * Math.pow(10, length));
-
   const username = `${normalizedUsername}${randomDigit}`;
-
   return username;
 };

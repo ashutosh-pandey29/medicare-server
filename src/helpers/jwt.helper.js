@@ -1,3 +1,4 @@
+// Import jsonwebtoken
 import jwt from "jsonwebtoken";
 
 //!<--------- generate  token------------------>

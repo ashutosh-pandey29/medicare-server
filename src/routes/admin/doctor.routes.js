@@ -23,6 +23,7 @@ router.patch(
   verifyDoctorProfileController
 );
 
+//! rollback doctor role(doctor to normal user)
 router.patch("/doctor/:userId/rollback", rollbackDoctorController);
 
 export default router;

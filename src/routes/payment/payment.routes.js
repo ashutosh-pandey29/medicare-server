@@ -2,7 +2,6 @@ import express from "express";
 import {
   createPaymentController,
   verifyPaymentController,
-  getPaymentByIdController,
   getPaymentController,
   downloadInvoiceController,
   getAllPaymentController
@@ -17,7 +16,6 @@ const router = express.Router();
 router.get("/all", authMiddleware,  getAllPaymentController); 
 
 router.get("/details", authMiddleware, getPaymentController); // sort info
-router.get("/details/:paymentId", getPaymentByIdController); // full info
 
 router.post("/create-order", authMiddleware, createPaymentController);
 router.post("/verify-payment", authMiddleware, verifyPaymentController);

@@ -1,1 +1,0 @@
-// verify token from db
