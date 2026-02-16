@@ -1,20 +1,21 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+
+//? Import environment variables
 import { env } from "./config/env.js";
+
+//? Initialize passport configuration (executes immediately)
 import "./config/passport.js";
 
 //? Create an instance of the Express application
 //? This 'app' will be used to define routes, middlewares, and server configuration
 const app = express();
 
-//? importing app  routes
+//? importing app  routes and services
 import routes from "./routes/index.routes.js";
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import { cronScheduler } from "./cron/cronScheduler.js";
-import { mailTo } from "./services/email/mailTo.service.js";
-
-//? importing global error handler middleware
 
 /**
  * ==============================
@@ -22,7 +23,8 @@ import { mailTo } from "./services/email/mailTo.service.js";
  * ==============================
  */
 
-//? Allow all origins
+//? Enable CORS (Cross-Origin Resource Sharing)
+//? Allows frontend domain to access backend APIs
 app.use(
   cors({
     origin: env.FRONTEND_URL,
@@ -31,8 +33,6 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
-
-console.log("app url ",env.FRONTEND_URL);
 
 //? PARSE JSON PAYLOAD -  request with JSON data
 app.use(express.json());
@@ -56,29 +56,12 @@ app.use("/api/v1", routes);
  * ===============================
  */
 
-// app.use((req, res, next) => {
-//   if (!req.path.startsWith("/api")) {
-//     return res.redirect(`${env.FRONTEND_URL}`);
-//   }
-//   next();
-// });
-
-
-app.get("/debug/env", (req, res) => {
-  res.json({
-    NODE_ENV: env.NODE_ENV,
-    FRONTEND_URL: env.FRONTEND_URL,
-  });
-});
-
-
-
 /**
  * ================================
  * ! CRON SCHEDULAR - START
  * ================================
  */
-
+//? Initialize background cron jobs when app starts
 cronScheduler();
 
 /**
@@ -86,6 +69,8 @@ cronScheduler();
  * !GLOBAL ERROR HANDLER
  * ============================
  */
+//? Catches all errors thrown in routes/middlewares
 app.use(globalErrorHandler);
 
+//? Export app to be used in server.js
 export default app;
