@@ -5,20 +5,22 @@ import { db } from "../db/db.service.js";
 
 export const deleteSubscriptionService = async (endpoint) => {
   if (!endpoint) {
-    throw new ApiError(HTTP_CODES.BAD_REQUEST, "Endpoint is required");
+    throw new ApiError(
+      HTTP_CODES.BAD_REQUEST,
+      "Subscription endpoint is required to disable notifications."
+    );
   }
 
-  console.log(endpoint)
-
   const deleted = await db.deleteOne(Subscription, { endpoint });
-
-  console.log(deleted);
   if (!deleted) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Subscription not found");
+    throw new ApiError(
+      HTTP_CODES.NOT_FOUND,
+      "No active subscription found for the provided endpoint."
+    );
   }
 
   return {
     statusCode: HTTP_CODES.OK,
-    message: "Notification disabled",
+    message: "Push notification subscription disabled successfully.",
   };
 };
