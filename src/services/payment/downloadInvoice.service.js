@@ -9,17 +9,24 @@ import { generatePdfFromHtml } from "../../helpers/generatePdf.js";
 
 export const downloadInvoiceService = async (paymentId) => {
   if (!paymentId) {
-    throw new ApiError(HTTP_CODES.BAD_REQUEST, "Payment id required");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, "Payment ID is required to download the invoice.");
   }
 
   const payment = await db.fetchOne(Payment, { _id: paymentId });
   if (!payment) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Payment not found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, `No payment found with ID: ${paymentId}`);
+  }
+
+  if (payment.paymentStatus !== "SUCCESS") {
+    throw new ApiError(
+      HTTP_CODES.BAD_REQUEST,
+      "Invoice can only be generated for successful payments."
+    );
   }
 
   const appointment = await db.fetchOne(Appointment, { _id: payment.appointmentId });
   if (!appointment) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Appointment not found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, "Associated appointment not found for this payment.");
   }
 
   const invoice = {
@@ -51,9 +58,13 @@ export const downloadInvoiceService = async (paymentId) => {
     .replace(/{{paidAt}}/g, invoice.paidAt)
     .replace(/{{generatedAt}}/g, new Date().toLocaleString("en-IN"));
 
-  const pdfBuffer = await generatePdfFromHtml(html);
+  let pdfBuffer;
 
- 
- return pdfBuffer;
+  try {
+    pdfBuffer = await generatePdfFromHtml(html);
+  } catch (error) {
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, "Failed to generate invoice PDF.");
+  }
 
+  return pdfBuffer;
 };

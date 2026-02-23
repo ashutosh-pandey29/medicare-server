@@ -6,17 +6,17 @@ import { db } from "../db/db.service.js";
 
 export const getPaymentService = async (userId) => {
   if (!userId) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "User id not found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, "User ID is required to fetch payment history.");
   }
 
   let payments = await db.fetchAll(
     Payment,
     { userId },
-    "amount paymentStatus method transactionId createdAt ,  appointmentId"
+    "amount paymentStatus method transactionId createdAt appointmentId"
   );
 
-  if (!payments) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Payment Not Found");
+  if (!payments || payments.length === 0) {
+    throw new ApiError(HTTP_CODES.NOT_FOUND, "No payment records found for this user.");
   }
 
   const appointmentIds = payments.map((pay) => pay.appointmentId);
@@ -39,7 +39,6 @@ export const getPaymentService = async (userId) => {
     return {
       paymentId: p._id,
       paymentAmount: p.amount,
-      paymentStatus: p.status,
       paymentMethod: p.method,
       paymentStatus: p.paymentStatus,
       transactionId: p.transactionId,
@@ -55,7 +54,7 @@ export const getPaymentService = async (userId) => {
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Payment fetched",
+    message: "User payment history retrieved successfully.",
     data: data,
   };
 };

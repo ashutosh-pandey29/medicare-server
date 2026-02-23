@@ -11,8 +11,8 @@ export const getAllPaymentService = async () => {
     "amount paymentStatus method transactionId createdAt   appointmentId"
   );
 
-  if (!payments) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Payment Not Found");
+  if (!payments || payments.length === 0 ) {
+    throw new ApiError(HTTP_CODES.NOT_FOUND, "No payment record found");
   }
 
   const appointmentIds = payments.map((pay) => pay.appointmentId);
