@@ -5,20 +5,17 @@ import { db } from "../db/db.service.js";
 
 export const getDoctorByDepartmentIdService = async (departmentId) => {
   if (!departmentId) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "department id not found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, "Department id is required");
   }
 
-  console.log(departmentId);
-
-  const doctor = await db.fetchAll(Doctor, {departmentId}, "doctorId  doctorName");
-
+  const doctor = await db.fetchAll(Doctor, { departmentId }, "doctorId  doctorName");
   if (!doctor) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "doctor not found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, "No doctors found for this department.");
   }
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Doctor fetched",
+    message: "Doctors fetched successfully.",
     data: doctor,
   };
 };

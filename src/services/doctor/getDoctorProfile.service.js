@@ -1,14 +1,13 @@
 import Doctor from "../../models/Doctor.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
-import { DOCTOR_MESSAGE } from "../../utils/messages/doctor.message.js";
 import { db } from "../db/db.service.js";
 
 export const getDoctorProfileService = async (userId) => {
   // check  userid
 
   if (!userId) {
-    throw new ApiError(HTTP_CODES.FORBIDDEN, DOCTOR_MESSAGE.FORBIDDEN);
+    throw new ApiError(HTTP_CODES.FORBIDDEN, "You are not authorized to access this profile.");
   }
 
   // const doctor = await db.fetchOne(Doctor, { userId });
@@ -18,7 +17,7 @@ export const getDoctorProfileService = async (userId) => {
   ]);
 
   if (!doctor) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, DOCTOR_MESSAGE.PROFILE_NOT_FOUND);
+    throw new ApiError(HTTP_CODES.NOT_FOUND, "Doctor profile not found.");
   }
 
   // prepare doctor profile
@@ -28,18 +27,18 @@ export const getDoctorProfileService = async (userId) => {
     doctorName: doctor.doctorName,
     phone: doctor.phone,
     gender: doctor.gender,
-    departmentId:doctor.departmentId._id,
+    departmentId: doctor.departmentId._id,
     department: doctor.departmentId ? doctor.departmentId.departmentName : null,
     experience: doctor.experience,
     bio: doctor.bio,
     education: doctor.education,
     workingTime: doctor.workingTime,
-    isVerified:doctor.isVerified,
+    isVerified: doctor.isVerified,
   };
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: DOCTOR_MESSAGE.PROFILE_FETCHED,
+    message: "Doctor profile fetched successfully.",
     data: preparedProfileResponse,
   };
 };
