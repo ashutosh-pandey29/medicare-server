@@ -1,10 +1,10 @@
-import Doctor from "../../models/Doctor.js";
-import { notifyRealtime } from "../../socket/notify.js";
-import { ApiError } from "../../utils/apiError.js";
-import { HTTP_CODES } from "../../utils/httpCodes.js";
-import { DOCTOR_MESSAGE } from "../../utils/messages/doctor.message.js";
-import { NOTIFICATION_MESSAGE } from "../../utils/messages/notification.message.js";
-import { db } from "../db/db.service.js";
+import Doctor from "../../../models/Doctor.js";
+import { notifyRealtime } from "../../../socket/notify.js";
+import { ApiError } from "../../../utils/apiError.js";
+import { HTTP_CODES } from "../../../utils/httpCodes.js";
+import { DOCTOR_MESSAGE } from "../../../utils/messages/doctor.message.js";
+import { NOTIFICATION_MESSAGE } from "../../../utils/messages/notification.message.js";
+import { db } from "../../db/db.service.js";
 
 export const verifyDoctorProfileService = async (profileId) => {
   // Check doctor exists

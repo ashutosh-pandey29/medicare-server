@@ -1,8 +1,8 @@
-import Doctor from "../../models/Doctor.js";
-import User from "../../models/User.js";
-import { ApiError } from "../../utils/apiError.js";
-import { HTTP_CODES } from "../../utils/httpCodes.js";
-import { db } from "../db/db.service.js";
+import Doctor from "../../../models/Doctor.js";
+import User from "../../../models/User.js";
+import { ApiError } from "../../../utils/apiError.js";
+import { HTTP_CODES } from "../../../utils/httpCodes.js";
+import { db } from "../../db/db.service.js";
 
 export const rollbackDoctorService = async (userId) => {
   if (!userId) {

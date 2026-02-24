@@ -1,5 +1,5 @@
 // Import service layer function to fetch doctors
-import { getDoctorByIdService } from "../../../services/admin/getDoctorById.service.js";
+import { getDoctorByIdService } from "../../../services/admin/doctor/getDoctorById.service.js";
 
 // Import standardized response handler
 import { respond } from "../../../utils/respond.js";
