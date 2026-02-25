@@ -1,27 +1,81 @@
+/**
+ * ======================================================
+ * CORE DEPENDENCIES
+ * ======================================================
+ */
 import express from "express";
+import passport from "passport";
+
+/**
+ * ======================================================
+ * MIDDLEWARES
+ * ======================================================
+ */
+import { payloadValidator } from "../../middlewares/validator.middleware.js";
+import { authMiddleware } from "../../middlewares/auth.middleware.js";
+
+/**
+ * ======================================================
+ * VALIDATION SCHEMA
+ * ======================================================
+ */
+import { registrationSchema } from "../../Schemas/register.schema.js";
+import { loginSchema } from "../../Schemas/login.schema.js";
+import { accountSchema } from "../../Schemas/account.schema.js";
+
+/**
+ * ======================================================
+ * ENVIRONMENT CONFIGURATION
+ * ======================================================
+ */
+import { env } from "../../config/env.js";
+
+/**
+ * ======================================================
+ * AUTH CONTROLLERS
+ * ======================================================
+ */
 import {
+  forgotPasswordController,
   loginController,
   logoutController,
   registerController,
-  verifyEmailController,
-  forgotPasswordController,
   resetPasswordController,
-  meController,
-  refreshTokenController,
-  updatePasswordController,
-  continueWithGoogleController,
+  verifyEmailController,
+} from "../../controllers/auth/auth.controller.js";
+
+/**
+ * ======================================================
+ * ACCOUNT CONTROLLERS
+ * ======================================================
+ */
+
+import {
   deleteAccountController,
-} from "../../controllers/auth/index.controller.js";
+  meController,
+  updatePasswordController,
+  updateAccountController,
+} from "../../controllers/auth/account.controller.js";
 
-import { payloadValidator } from "../../middlewares/validator.middleware.js";
-import { registrationSchema } from "../../Schemas/register.schema.js";
-import { loginSchema } from "../../Schemas/login.schema.js";
-import { authMiddleware } from "../../middlewares/auth.middleware.js";
-import { accountSchema } from "../../Schemas/account.schema.js";
-import { updateAccountController } from "../../controllers/auth/updateAccount.controller.js";
-import passport from "passport";
-import { env } from "../../config/env.js";
+/**
+ * ======================================================
+ * SOCIAL LOGIN CONTROLLER
+ * ======================================================
+ */
+import { continueWithGoogleController } from "../../controllers/auth/socialLogin.controller.js";
 
+/**
+ * ======================================================
+ * TOKEN MANAGEMENT CONTROLLER
+ * ======================================================
+ */
+import { refreshTokenController } from "../../controllers/auth/token.controller.js";
+
+/**
+ * ======================================================
+ * ROUTER INITIALIZATION
+ * ======================================================
+ */
 const router = express.Router();
 
 // -------------------- AUTH ROUTES --------------------
@@ -64,10 +118,8 @@ router.put(
 //! Logout the currently authenticated user
 router.post("/logout", authMiddleware, logoutController); // Protected: Deletes refresh token and clears cookie
 
-
-//! DELETE user / doctor account 
-router.put("/delete" ,  authMiddleware ,  deleteAccountController);
-
+//! DELETE user / doctor account
+router.put("/delete", authMiddleware, deleteAccountController);
 
 // -------------------- SOCIAL LOGIN --------------------
 router.get("/google", passport.authenticate("google", { scope: ["profile", "email"] })); // Public
