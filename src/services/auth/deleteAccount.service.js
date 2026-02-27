@@ -1,18 +1,18 @@
 import User from "../../models/User.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
+import { AUTH_MESSAGES } from "../../utils/messages/auth.message.js";
+import { SERVER_MESSAGES } from "../../utils/messages/server.message.js";
 import { db } from "../db/db.service.js";
 
 export const deleteAccountService = async (user) => {
+  // check user
   if (!user) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "User not found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, AUTH_MESSAGES.USER_NOT_FOUND);
   }
 
   // check role and take action on account
-
   if (user.role === "user") {
-    // make user inactive for 7  and after 72 hr delete user (soft delete)
-
     const isInactive = await db.updateOne(
       User,
       { _id: user.userId },
@@ -21,11 +21,9 @@ export const deleteAccountService = async (user) => {
 
     if (isInactive) {
       // logout user
-
       return {
         httpStatus: HTTP_CODES.OK,
-        message:
-          "Your account has been deactivated. It will be permanently deleted after 72 hours. You can reactivate it by contacting support.",
+        message: AUTH_MESSAGES.USER_DEACTIVATED,
       };
     }
   } else if (user.role === "doctor") {
@@ -33,9 +31,9 @@ export const deleteAccountService = async (user) => {
 
     return {
       httpStatus: HTTP_CODES.OK,
-      message: "Your account deletion request has been sent to admin for approval.",
+      message: AUTH_MESSAGES.DOCTOR_DELETE_REQUEST,
     };
   }
 
-  throw new ApiError(HTTP_CODES.BAD_REQUEST, "Invalid user role");
+  throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, SERVER_MESSAGES.INTERNAL_SERVER_ERROR);
 };
