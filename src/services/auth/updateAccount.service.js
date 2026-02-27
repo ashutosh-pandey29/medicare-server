@@ -7,7 +7,7 @@ export const updateAccountService = async (data) => {
   const { username, email, userId } = data;
 
   if (!username || !email || !userId) {
-    throw new Error("information is required");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, AUTH_MESSAGES.REQUIRED_FIELDS);
   }
 
   // find user using userid
@@ -15,19 +15,19 @@ export const updateAccountService = async (data) => {
   const user = await db.fetchById(User, userId);
 
   if (!user) {
-    throw new Error(AUTH_MESSAGES.USER_NOT_FOUND);
+    throw new ApiError(HTTP_CODES.NOT_FOUND, AUTH_MESSAGES.USER_NOT_FOUND);
   }
 
   // Check if email or username already exists in other accounts
 
   const isEmailExist = await db.exists(User, { email: email, _id: { $ne: userId } });
   if (isEmailExist) {
-    throw new Error("Email already in use by another account.");
+    throw new ApiError(HTTP_CODES.CONFLICT, AUTH_MESSAGES.EMAIL_ALREADY_IN_USE);
   }
 
   const isUsernameExist = await db.exists(User, { username: username, _id: { $ne: userId } });
   if (isUsernameExist) {
-    throw new Error("Username already taken by another user.");
+    throw new ApiError(HTTP_CODES.CONFLICT, AUTH_MESSAGES.USERNAME_ALREADY_TAKEN);
   }
 
   // update
@@ -38,11 +38,11 @@ export const updateAccountService = async (data) => {
   const isUpdated = await db.updateOne(User, filter, newAccountValue, { new: true });
 
   if (!isUpdated) {
-    throw new Error("Account Information Can't be updated");
+    throw new ApiError(HTTP_CODES.NOT_IMPLEMENTED, AUTH_MESSAGES.UPDATE_FAILED);
   }
 
   return {
-    statusCode: HTTP_CODES.OK,
-    message: "Account Information Updated Successfully",
+    httpStatus: HTTP_CODES.OK,
+    message: AUTH_MESSAGES.UPDATE_SUCCESS,
   };
 };

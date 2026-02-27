@@ -4,6 +4,7 @@ import { generateJwtToken } from "../../helpers/jwt.helper.js";
 import User from "../../models/User.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
+import { AUTH_MESSAGES } from "../../utils/messages/auth.message.js";
 import { db } from "../db/db.service.js";
 
 export const googleLoginService = async (profile) => {
@@ -21,7 +22,7 @@ export const googleLoginService = async (profile) => {
   if (user && user.provider !== "google") {
     throw new ApiError(
       HTTP_CODES.CONFLICT,
-      "This email is already registered using another login method"
+      AUTH_MESSAGES.EMAIL_ALREADY_REGISTERED_WITH_OTHER_PROVIDER
     );
   }
 
@@ -38,7 +39,10 @@ export const googleLoginService = async (profile) => {
     } while (attempts < MAX_ATTEMPTS && (await db.exists(User, { username })));
 
     if (attempts === MAX_ATTEMPTS) {
-      throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, "Unable to generate unique username");
+      throw new ApiError(
+        HTTP_CODES.INTERNAL_SERVER_ERROR,
+        AUTH_MESSAGES.USERNAME_GENERATION_FAILED
+      );
     }
 
     const data = {
@@ -54,7 +58,7 @@ export const googleLoginService = async (profile) => {
     user = await db.createOne(User, data);
 
     if (!user) {
-      throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, "User creation failed");
+      throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, AUTH_MESSAGES.USER_CREATION_FAILED);
     }
   }
 
@@ -90,6 +94,10 @@ export const googleLoginService = async (profile) => {
 
   // success - Return tokens to controller
   return {
+    httpStatus:HTTP_CODES.OK,
+    message:AUTH_MESSAGES.GOOGLE_LOGIN_SUCCESS,
     refreshToken: refreshToken,
+    
+
   };
 };

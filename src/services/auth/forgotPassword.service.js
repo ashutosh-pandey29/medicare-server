@@ -4,6 +4,7 @@ import User from "../../models/User.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
 import { AUTH_MESSAGES } from "../../utils/messages/auth.message.js";
+import { MAIL_MESSAGES } from "../../utils/messages/mail.message.js";
 import { SERVER_MESSAGES } from "../../utils/messages/server.message.js";
 import { db } from "../db/db.service.js";
 import { mailTo } from "../email/mailTo.service.js";
@@ -13,7 +14,7 @@ export const forgotPasswordService = async (data) => {
   // Normalize and validate email input
   const email = data?.email?.toLowerCase().trim();
   if (!email) {
-    throw new ApiError(HTTP_CODES.BAD_REQUEST, "Email is missing.");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, MAIL_MESSAGES.EMAIL_REQUIRED);
   }
 
   // Check if user exists with the provided email
@@ -51,14 +52,12 @@ export const forgotPasswordService = async (data) => {
 
   // Handle email sending failure
   if (!isSend) {
-    throw new ApiError(
-      HTTP_CODES.SERVICE_UNAVAILABLE,
-      "Failed to send reset password email. Please try again later."
-    );
+    throw new ApiError(HTTP_CODES.SERVICE_UNAVAILABLE, MAIL_MESSAGES.PASSWORD_RESET_EMAIL_NOT_SENT);
   }
 
   // Success response
   return {
+    httpStatus: HTTP_CODES.OK,
     message: AUTH_MESSAGES.PASSWORD_RESET_EMAIL_SENT,
   };
 };

@@ -10,7 +10,7 @@ export const resetPasswordService = async (data) => {
   const { token, password } = data;
 
   if (!token || !password) {
-    throw new ApiError(HTTP_CODES.BAD_REQUEST, "Token and password are required");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, AUTH_MESSAGES.RESET_TOKEN_INVALID);
   }
 
   // find user with valid reset token
@@ -40,6 +40,7 @@ export const resetPasswordService = async (data) => {
   }
 
   return {
+    httpStatus:HTTP_CODES.OK,
     message: AUTH_MESSAGES.PASSWORD_RESET_SUCCESS,
   };
 };

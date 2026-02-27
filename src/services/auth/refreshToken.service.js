@@ -45,6 +45,8 @@ export const refreshTokenService = async (refreshToken) => {
   );
 
   return {
+    httpStatus:HTTP_CODES.OK,
+    message:AUTH_MESSAGES.REFRESH_TOKEN_SUCCESS,
     accessToken: newAccessToken,
     refreshToken: newRefreshToken,
   };

@@ -105,7 +105,7 @@ export const registerService = async (data) => {
 
   // final response
   return {
-    statusCode: HTTP_CODES.CREATED,
+    httpStatus: HTTP_CODES.CREATED,
     message: AUTH_MESSAGES.REGISTRATION_SUCCESS,
   };
 };

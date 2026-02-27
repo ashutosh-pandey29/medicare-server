@@ -1,4 +1,10 @@
 export const MAIL_MESSAGES = {
+
+EMAIL_REQUIRED: "Email address is required",
+EMAIL_INVALID: "Invalid email address",
+
+
+
   /* ===== VERIFICATION EMAILS ===== */
   VERIFICATION_EMAIL_SENT: "Verification email has been sent. Please check your inbox.",
   EMAIL_VERIFIED: "Your email has been verified successfully.",
@@ -10,6 +16,8 @@ export const MAIL_MESSAGES = {
 
   /* ===== PASSWORD RESET EMAILS ===== */
   PASSWORD_RESET_EMAIL_SENT: "Password reset instructions have been sent to your email.",
+   PASSWORD_RESET_EMAIL_NOT_SENT:   "Failed to send reset password email. Please try again later.",
+
   PASSWORD_RESET_SUCCESS: "Your password has been reset successfully.",
   RESET_TOKEN_INVALID: "The password reset link is invalid or expired. Please request again.",
 

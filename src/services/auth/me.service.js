@@ -18,6 +18,7 @@ export const meService = async (data) => {
   }
 
   return {
+    httpStatus:HTTP_CODES.OK,
     message: AUTH_MESSAGES.PROFILE_FETCHED,
     data: {
       username: user.username,

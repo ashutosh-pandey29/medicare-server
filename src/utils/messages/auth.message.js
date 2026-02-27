@@ -16,6 +16,7 @@ export const AUTH_MESSAGES = {
   ACCOUNT_BLOCKED:
     "Your account is temporarily blocked due to multiple failed login attempts. Please try again after 24 hours.",
   ACCOUNT_DELETED: "Your unverified registration data has been removed after 24 hours.",
+  ACCOUNT_PERMANENT_DELETED: "Your account has been deleted.",
   TOO_MANY_ATTEMPTS: "Too many failed login attempts, try later",
   EMAIL_NOT_VERIFIED: "Please verify your email before logging in",
   LOGOUT_SUCCESS: "Logout successful",
@@ -28,11 +29,29 @@ export const AUTH_MESSAGES = {
   VERIFICATION_TOKEN_INVALID: "Invalid or expired verification token",
   PASSWORD_RESET_EMAIL_SENT: "Password reset email sent",
   PASSWORD_RESET_SUCCESS: "Password reset successfully",
+  PASSWORD_NOT_UPDATED: "Password not updated",
+  PASSWORD_UPDATED: "Password updated",
+  PASSWORD_VERIFICATION_FAILED: "Password verification failed",
+  DIFF_PASSWORD: "New password must be different from old password",
   RESET_TOKEN_INVALID: "Invalid or expired reset token",
   ACCOUNT_REACTIVATION_FAILED: "Your account cannot be reactivated. Please try again later.",
-  USER_DEACTIVATED:  "Your account has been deactivated. It will be permanently deleted after 72 hours. You can reactivate it by contacting support.",
-  DOCTOR_DELETE_REQUEST:"Your account deletion request has been sent to admin for approval.",
+  USER_DEACTIVATED:
+    "Your account has been deactivated. It will be permanently deleted after 72 hours. You can reactivate it by contacting support.",
+  DOCTOR_DELETE_REQUEST: "Your account deletion request has been sent to admin for approval.",
 
   /* ===== PROFILE ===== */
   PROFILE_FETCHED: "User profile fetched successfully",
+
+  REQUIRED_FIELDS: "Username, email, and user ID are required",
+  EMAIL_ALREADY_IN_USE: "Email is already in use by another account",
+  USERNAME_ALREADY_TAKEN: "Username is already taken by another user",
+  UPDATE_FAILED: "Failed to update account information",
+  UPDATE_SUCCESS: "Account information updated successfully",
+
+
+  EMAIL_ALREADY_REGISTERED_WITH_OTHER_PROVIDER:
+    "This email is already registered using another login method",
+  USERNAME_GENERATION_FAILED: "Unable to generate a unique username",
+  USER_CREATION_FAILED: "Failed to create user account",
+  GOOGLE_LOGIN_SUCCESS: "Logged in successfully with Google",
 };

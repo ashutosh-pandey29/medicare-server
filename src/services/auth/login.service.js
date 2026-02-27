@@ -7,6 +7,7 @@ import { HTTP_CODES } from "../../utils/httpCodes.js";
 import { AUTH_MESSAGES } from "../../utils/messages/auth.message.js";
 import { verifyPassword } from "../../helpers/password.helper.js";
 import { env } from "../../config/env.js";
+import { SERVER_MESSAGES } from "../../utils/messages/server.message.js";
 
 export const loginService = async (data) => {
   // Configuration constants
@@ -52,7 +53,7 @@ export const loginService = async (data) => {
       }
     } else {
       // Permanently deleted after 7 days
-      throw new ApiError(HTTP_CODES.FORBIDDEN, "Your account is deleted");
+      throw new ApiError(HTTP_CODES.FORBIDDEN, AUTH_MESSAGES.ACCOUNT_PERMANENT_DELETED);
     }
   }
 
@@ -68,7 +69,7 @@ export const loginService = async (data) => {
 
   // Ensure password exists
   if (!user.password) {
-    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, "Password not found for user");
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, SERVER_MESSAGES.INTERNAL_SERVER_ERROR);
   }
 
   // ================= PASSWORD VERIFICATION =================
@@ -104,7 +105,6 @@ export const loginService = async (data) => {
   }
 
   // ================= JWT TOKEN GENERATION =================
-
 
   // Prepare payload for JWT token
   const payload = {
@@ -160,6 +160,8 @@ export const loginService = async (data) => {
 
   // success - Return tokens to controller
   return {
+    httpStatus:HTTP_CODES.OK,
+    message:AUTH_MESSAGES.LOGIN_SUCCESS,
     accessToken: accessToken,
     refreshToken: refreshToken,
   };

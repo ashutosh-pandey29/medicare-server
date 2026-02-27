@@ -20,12 +20,12 @@ export const updatePasswordService = async (data) => {
   const isVerified = await verifyPassword(oldPassword, user.password);
 
   if (!isVerified) {
-    throw new ApiError(HTTP_CODES.BAD_REQUEST, "Password verification failed");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, AUTH_MESSAGES.PASSWORD_VERIFICATION_FAILED);
   }
 
   const isSame = await verifyPassword(newPassword, user.password);
   if (isSame) {
-    throw new ApiError(HTTP_CODES.BAD_REQUEST, "New password must be different from old password");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, AUTH_MESSAGES.DIFF_PASSWORD);
   }
 
   const hashedPassword = await hashPassword(newPassword);
@@ -40,12 +40,13 @@ export const updatePasswordService = async (data) => {
   );
 
   if (!isUpdated) {
-    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, "Password could not be changed");
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, AUTH_MESSAGES.PASSWORD_NOT_UPDATED);
   }
 
   await logoutService(userId);
 
   return {
-    message: AUTH_MESSAGES.PASSWORD_RESET_SUCCESS,
+    httpStatus: HTTP_CODES.OK,
+    message: AUTH_MESSAGES.PASSWORD_UPDATED,
   };
 };

@@ -71,5 +71,5 @@ export const verifyEmailService = async (token) => {
     });
   }
 
-  return { statusCode: HTTP_CODES.OK, message: AUTH_MESSAGES.EMAIL_VERIFIED };
+  return { httpStatus: HTTP_CODES.OK, message: AUTH_MESSAGES.EMAIL_VERIFIED };
 };

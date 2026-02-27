@@ -60,21 +60,20 @@ export const verifyEmailController = async (req, res, next) => {
 
 export const loginController = async (req, res, next) => {
   try {
-    // Call the login service to validate user and get tokens
-    const { accessToken, refreshToken } = await loginService(req.body);
+    const serviceResponse = await loginService(req.body);
 
-    // Set refresh token in httpOnly cookie (secure storage)
-    // Access token will be sent in response body for client-side use
+    const { accessToken, refreshToken, message, httpStatus } = serviceResponse;
+
+    // Set refresh token in httpOnly cookie
     setCookie(res, refreshToken);
 
-    // Send success response with access token
+    // Send success response
     respond.success(res, {
-      statusCode: HTTP_CODES.OK,
-      message: AUTH_MESSAGES.LOGIN_SUCCESS,
+      httpStatus,
+      message,
       data: { accessToken },
     });
   } catch (err) {
-    // pass error to global error handler
     next(err);
   }
 };
@@ -88,10 +87,10 @@ export const loginController = async (req, res, next) => {
 export const forgotPasswordController = async (req, res, next) => {
   try {
     // Call forgot password service to generate reset token and send email
-    const message = await forgotPasswordService(req.body);
+    const serviceResponse = await forgotPasswordService(req.body);
 
     // Send success response to client
-    respond.success(res, { statusCode: HTTP_CODES.OK, message: message });
+    respond.success(res, serviceResponse);
   } catch (err) {
     //pass error to global error handler
     // console.log(err);
@@ -108,12 +107,9 @@ export const forgotPasswordController = async (req, res, next) => {
 export const resetPasswordController = async (req, res, next) => {
   try {
     // Call reset password service with token and new password
-
-    const message = await resetPasswordService(req.body);
-
+    const serviceResponse = await resetPasswordService(req.body);
     // Send success response
-
-    respond.success(res, { statusCode: HTTP_CODES.OK, message: message });
+    respond.success(res, serviceResponse);
   } catch (err) {
     // pass error to global error handler
     next(err);
@@ -131,16 +127,13 @@ export const logoutController = async (req, res, next) => {
     const userId = req.user.userId; // Protected route, req.user available
 
     // Remove refresh token from DB
-    await logoutService(userId);
+    const serviceResponse = await logoutService(userId);
 
     // Delete refresh token cookie (if stored in cookie)
     removeCookie(res, "refreshToken");
 
     // Send response
-    respond.success(res, {
-      statusCode: HTTP_CODES.OK,
-      message: "Logout successful",
-    });
+    respond.success(res, serviceResponse);
   } catch (err) {
     //pass error to global error handler
     next(err);
