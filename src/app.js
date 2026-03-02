@@ -58,6 +58,21 @@ app.use(express.urlencoded({ extended: true }));
 //? Middleware to parse cookies from incoming requests
 app.use(cookieParser());
 
+
+/**
+ * ======================================
+ * !Health Check Route
+ * ======================================
+ * Simple endpoint to verify server is running.
+ */
+app.get("/health", (req, res) => {
+  res.status(200).json({
+    success: true,
+    message: "Server is running",
+  });
+});
+
+
 /**
  * ======================================
  * !Registering All API Routes
@@ -75,11 +90,7 @@ app.use(cookieParser());
  */
 app.use("/api/v1", rateLimiter, routes);
 
-/**
- * ===============================
- * ! REDIRECT FRONTEND
- * ===============================
- */
+
 
 /**
  * ================================
