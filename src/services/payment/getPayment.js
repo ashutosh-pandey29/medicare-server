@@ -2,11 +2,12 @@ import Appointment from "../../models/Appointment.js";
 import Payment from "../../models/Payment.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
+import { PAYMENT_MESSAGE } from "../../utils/messages/payment.message.js";
 import { db } from "../db/db.service.js";
 
 export const getPaymentService = async (userId) => {
   if (!userId) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "User ID is required to fetch payment history.");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, PAYMENT_MESSAGE.USER_ID_REQUIRED);
   }
 
   let payments = await db.fetchAll(
@@ -16,7 +17,7 @@ export const getPaymentService = async (userId) => {
   );
 
   if (!payments || payments.length === 0) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "No payment records found for this user.");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, PAYMENT_MESSAGE.USER_PAYMENT_NOT_FOUND);
   }
 
   const appointmentIds = payments.map((pay) => pay.appointmentId);
@@ -54,7 +55,7 @@ export const getPaymentService = async (userId) => {
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "User payment history retrieved successfully.",
+    message: PAYMENT_MESSAGE.USER_HISTORY_FETCH_SUCCESS,
     data: data,
   };
 };

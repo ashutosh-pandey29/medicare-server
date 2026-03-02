@@ -4,6 +4,7 @@ import { db } from "../db/db.service.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
 import { env } from "../../config/env.js";
+import { PAYMENT_MESSAGE } from "../../utils/messages/payment.message.js";
 
 const instance = new Razorpay({
   key_id: env.RAZORPAY_KEY_ID,
@@ -12,13 +13,16 @@ const instance = new Razorpay({
 
 export const createPaymentService = async (appointmentId) => {
   if (!appointmentId) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Appointment ID is required to initiate payment.");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, PAYMENT_MESSAGE.APPOINTMENT_ID_REQUIRED);
   }
 
   const appointment = await db.fetchOne(Appointment, { appointmentId: appointmentId });
 
   if (!appointment) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, `No appointment found with ID: ${appointmentId}`);
+    throw new ApiError(
+      HTTP_CODES.NOT_FOUND,
+      `${PAYMENT_MESSAGE.APPOINTMENT_NOT_FOUND} - ${appointmentId}`
+    );
   }
 
   const amount = appointment.paymentAmount;
@@ -32,15 +36,12 @@ export const createPaymentService = async (appointmentId) => {
   const order = await instance.orders.create(options);
 
   if (!order) {
-    throw new ApiError(
-      HTTP_CODES.INTERNAL_SERVER_ERROR,
-      "Failed to create payment. Please try again later."
-    );
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, PAYMENT_MESSAGE.PAYMENT_CREATION_FAILED);
   }
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "payment created successfully. Proceed to payment.",
+    message: PAYMENT_MESSAGE.PAYMENT_CREATED_SUCCESS,
     data: order,
   };
 };

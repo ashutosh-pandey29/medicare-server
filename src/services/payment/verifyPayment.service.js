@@ -5,6 +5,7 @@ import Payment from "../../models/Payment.js";
 import { notifyRealtime } from "../../socket/notify.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
+import { PAYMENT_MESSAGE } from "../../utils/messages/payment.message.js";
 import { db } from "../db/db.service.js";
 import crypto from "crypto";
 import Razorpay from "razorpay";
@@ -22,7 +23,7 @@ export const verifyPaymentService = async (
   user
 ) => {
   if (!razorpay_order_id || !razorpay_payment_id || !razorpay_signature || !appointmentId) {
-    throw new ApiError(HTTP_CODES.BAD_REQUEST, "Invalid payment verification request.");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, PAYMENT_MESSAGE.VERIFICATION_REQUEST_INVALID);
   }
 
   const appointment = await db.fetchOne(Appointment, { appointmentId });
@@ -50,7 +51,7 @@ export const verifyPaymentService = async (
     if (!isUpdated) {
       throw new ApiError(
         HTTP_CODES.NOT_FOUND,
-        "Failed to update appointment status after payment verification."
+        PAYMENT_MESSAGE.APPOINTMENT_UPDATE_FAILED
       );
     }
     const payment = await instance.payments.fetch(razorpay_payment_id);
@@ -77,7 +78,7 @@ export const verifyPaymentService = async (
     if (!isPaymentInserted) {
       throw new ApiError(
         HTTP_CODES.INTERNAL_SERVER_ERROR,
-        "Payment was verified but failed to record transaction details."
+        PAYMENT_MESSAGE.PAYMENT_RECORD_INSERT_FAILED
       );
     }
 
@@ -96,19 +97,15 @@ export const verifyPaymentService = async (
 
     await notifyRealtime(doctor?.userId, notificationPayload);
 
-
-    // send web push notification 
+    // send web push notification
 
     return {
       httpStatus: HTTP_CODES.OK,
-      message: "Payment verified successfully and appointment booked.",
+      message: PAYMENT_MESSAGE.PAYMENT_VERIFIED_SUCCESS,
       data: null,
     };
   } else {
     // console.log("Invalid signature");
-    throw new ApiError(
-      HTTP_CODES.INTERNAL_SERVER_ERROR,
-      "Payment verification failed due to invalid signature."
-    );
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, PAYMENT_MESSAGE.PAYMENT_SIGNATURE_INVALID);
   }
 };

@@ -1,0 +1,21 @@
+export const PAYMENT_MESSAGE = {
+  APPOINTMENT_ID_REQUIRED: "Appointment ID is required to initiate payment.",
+  APPOINTMENT_NOT_FOUND: "No appointment found with this Id.",
+  PAYMENT_CREATION_FAILED: "Failed to create payment. Please try again later.",
+  PAYMENT_CREATED_SUCCESS: "Payment created successfully. Proceed to payment.",
+  PAYMENT_ID_REQUIRED: "Payment ID is required to download the invoice.",
+  PAYMENT_NOT_FOUND: "No payment found.",
+  PAYMENT_NOT_SUCCESS: "Invoice can only be generated for successful payments.",
+  APPOINTMENT_NOT_ASSOCIATED: "Associated appointment not found for this payment.",
+  PAYMENT_RECORDS_NOT_FOUND: "No payment record found.",
+  USER_PAYMENT_NOT_FOUND: "No payment records found for this user.",
+  USER_ID_REQUIRED: "User ID is required to fetch payment history.",
+  VERIFICATION_REQUEST_INVALID: "Invalid payment verification request.",
+  APPOINTMENT_UPDATE_FAILED: "Failed to update appointment status after payment verification.",
+  PAYMENT_RECORD_INSERT_FAILED: "Payment was verified but failed to record transaction details.",
+  PAYMENT_VERIFIED_SUCCESS: "Payment verified successfully and appointment booked.",
+  PAYMENT_SIGNATURE_INVALID: "Payment verification failed due to invalid signature.",
+  FETCH_SUCCESS: "Payment fetched successfully.",
+  USER_HISTORY_FETCH_SUCCESS: "User payment history retrieved successfully.",
+  FAILED_TO_GENERATE_INVOICE:"Failed to generate invoice PDF."
+};

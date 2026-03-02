@@ -6,27 +6,25 @@ import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
 import { db } from "../db/db.service.js";
 import { generatePdfFromHtml } from "../../helpers/generatePdf.js";
+import { PAYMENT_MESSAGE } from "../../utils/messages/payment.message.js";
 
 export const downloadInvoiceService = async (paymentId) => {
   if (!paymentId) {
-    throw new ApiError(HTTP_CODES.BAD_REQUEST, "Payment ID is required to download the invoice.");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, PAYMENT_MESSAGE.PAYMENT_ID_REQUIRED);
   }
 
   const payment = await db.fetchOne(Payment, { _id: paymentId });
   if (!payment) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, `No payment found with ID: ${paymentId}`);
+    throw new ApiError(HTTP_CODES.NOT_FOUND, `${PAYMENT_MESSAGE.PAYMENT_NOT_FOUND} for - ${paymentId}`);
   }
 
   if (payment.paymentStatus !== "SUCCESS") {
-    throw new ApiError(
-      HTTP_CODES.BAD_REQUEST,
-      "Invoice can only be generated for successful payments."
-    );
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, PAYMENT_MESSAGE.PAYMENT_NOT_SUCCESS);
   }
 
   const appointment = await db.fetchOne(Appointment, { _id: payment.appointmentId });
   if (!appointment) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Associated appointment not found for this payment.");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, PAYMENT_MESSAGE.APPOINTMENT_NOT_ASSOCIATED);
   }
 
   const invoice = {
@@ -63,7 +61,10 @@ export const downloadInvoiceService = async (paymentId) => {
   try {
     pdfBuffer = await generatePdfFromHtml(html);
   } catch (error) {
-    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, "Failed to generate invoice PDF.");
+    throw new ApiError(
+      HTTP_CODES.INTERNAL_SERVER_ERROR,
+      PAYMENT_MESSAGE.FAILED_TO_GENERATE_INVOICE
+    );
   }
 
   return pdfBuffer;

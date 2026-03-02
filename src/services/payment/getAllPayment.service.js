@@ -2,6 +2,7 @@ import Appointment from "../../models/Appointment.js";
 import Payment from "../../models/Payment.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
+import { PAYMENT_MESSAGE } from "../../utils/messages/payment.message.js";
 import { db } from "../db/db.service.js";
 
 export const getAllPaymentService = async () => {
@@ -12,7 +13,7 @@ export const getAllPaymentService = async () => {
   );
 
   if (!payments || payments.length === 0 ) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "No payment record found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, PAYMENT_MESSAGE.PAYMENT_NOT_FOUND);
   }
 
   const appointmentIds = payments.map((pay) => pay.appointmentId);
@@ -51,7 +52,7 @@ export const getAllPaymentService = async () => {
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Payment fetched",
+    message: PAYMENT_MESSAGE.FETCH_SUCCESS,
     data: data,
   };
 };
