@@ -16,6 +16,7 @@ const app = express();
 import routes from "./routes/index.routes.js";
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import { cronScheduler } from "./cron/cronScheduler.js";
+import { rateLimiter } from "./middlewares/rateLimiter.middleware.js";
 
 /**
  * ==============================
@@ -43,12 +44,25 @@ app.use(express.urlencoded({ extended: true }));
 //? Middleware to parse cookies from incoming requests
 app.use(cookieParser());
 
+
+
+
 /**
- * =============================
- * !REGISTERING ALL ROUTES
- * =============================
+ * ======================================
+ * !Registering All API Routes
+ * ======================================
+ * All application routes are mounted under /api/v1
  */
-app.use("/api/v1", routes);
+ 
+/**
+ * ======================================
+ * !Global Rate Limiter Middleware
+ * ======================================
+ * • Applies to all routes under /api/v1
+ * • Limits each IP to 100 requests per minute
+ * • Helps prevent abuse, spam, and brute-force attacks
+ */
+app.use("/api/v1", rateLimiter , routes);
 
 /**
  * ===============================

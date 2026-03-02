@@ -15,6 +15,8 @@ export const SERVER_MESSAGES = {
   FORBIDDEN: "You do not have permission to perform this action.",
   ACCESS_DENIED: "Access to this resource is denied.",
 
+  TOO_MANY_REQ:"Too many requests. Please try again after some time.",
+
   /* ===== DEVELOPMENT / DEBUGGING ===== */
   UNKNOWN_ERROR: "An unexpected error occurred. Please try again later.",
 };
