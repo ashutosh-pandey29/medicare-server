@@ -31,7 +31,7 @@ export const getDoctorByIdService = async (profileId) => {
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Data fetched",
+    message:DOCTOR_MESSAGE.DATA_FETCH,
     data: preparedDoctorProfileResponse,
   };
 };

@@ -106,5 +106,14 @@ export const DOCTOR_MESSAGE = {
   SERVER_ERROR: "Internal server error.",
   DATA_FETCH_FAILED: "Failed to fetch doctor data.",
   DATA_FETCH :"Data fetched successfully.",
-  DEPARTMENT_ID_REQ:"Department Id is required."
+  DEPARTMENT_ID_REQ:"Department Id is required.",
+
+
+
+
+  MISSING_USER_ID: "User ID is required to rollback doctor role.",
+  PROFILE_NOT_FOUND: "Doctor profile not found for this user.",
+  ROLE_ROLLBACK_FAILED: "Failed to rollback doctor role. Please try again.",
+  PROFILE_DEACTIVATION_FAILED: "Role reverted but failed to deactivate doctor profile.",
+  ROLLBACK_SUCCESS: "Doctor role rolled back and profile deactivated successfully.",
 };

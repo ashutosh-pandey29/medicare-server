@@ -28,7 +28,7 @@ export const getDoctorService = async () => {
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Data fetched",
+    message: DOCTOR_MESSAGE.DATA_FETCH,
     data: preparedDataTable,
   };
 };

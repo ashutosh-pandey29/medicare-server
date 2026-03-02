@@ -2,26 +2,24 @@ import Doctor from "../../../models/Doctor.js";
 import User from "../../../models/User.js";
 import { ApiError } from "../../../utils/apiError.js";
 import { HTTP_CODES } from "../../../utils/httpCodes.js";
+import { DOCTOR_MESSAGE } from "../../../utils/messages/doctor.message.js";
 import { db } from "../../db/db.service.js";
 
 export const rollbackDoctorService = async (userId) => {
   if (!userId) {
-    throw new ApiError(HTTP_CODES.BAD_REQUEST, "User ID is required to rollback doctor role.");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, DOCTOR_MESSAGE.MISSING_USER_ID);
   }
 
   const doctor = await db.fetchOne(Doctor, { _id: userId });
 
   if (!doctor) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Doctor profile not found for this user.");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, DOCTOR_MESSAGE.PROFILE_NOT_FOUND);
   }
 
   const isRoleUpdated = await db.updateOne(User, { _id: doctor.userId }, { role: "user" });
 
   if (!isRoleUpdated) {
-    throw new ApiError(
-      HTTP_CODES.INTERNAL_SERVER_ERROR,
-      "Failed to rollback doctor role. Please try again."
-    );
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, DOCTOR_MESSAGE.ROLE_ROLLBACK_FAILED);
   }
 
   // delete doctor profile
@@ -31,13 +29,13 @@ export const rollbackDoctorService = async (userId) => {
   if (!isProfileDeleted) {
     throw new ApiError(
       HTTP_CODES.INTERNAL_SERVER_ERROR,
-      "Role reverted but failed to deactivate doctor profile."
+      DOCTOR_MESSAGE.PROFILE_DEACTIVATION_FAILED
     );
   }
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Doctor role rolled back and profile deactivated successfully.",
+    message: DOCTOR_MESSAGE.ROLLBACK_SUCCESS,
     data: null,
   };
 };
