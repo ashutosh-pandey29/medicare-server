@@ -1,26 +1,21 @@
 import Subscription from "../../models/Subscription.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
+import { NOTIFICATION_MESSAGE } from "../../utils/messages/notification.message.js";
 import { db } from "../db/db.service.js";
 
 export const saveSubscriptionService = async (subscriptionData, userInfo) => {
   if (!userInfo) {
-    throw new ApiError(
-      HTTP_CODES.BAD_REQUEST,
-      "Unauthorized request. User authentication is required."
-    );
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, NOTIFICATION_MESSAGE.SUBSCRIPTION.UNAUTHORIZED);
   }
   if (!subscriptionData) {
-    throw new ApiError(
-      HTTP_CODES.BAD_REQUEST,
-      "Subscription data is required to enable notifications."
-    );
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, NOTIFICATION_MESSAGE.SUBSCRIPTION.DATA_REQUIRED);
   }
 
   if (!subscriptionData?.endpoint || !subscriptionData.keys) {
     throw new ApiError(
       HTTP_CODES.BAD_REQUEST,
-      "Subscription endpoint and encryption keys are required."
+      NOTIFICATION_MESSAGE.SUBSCRIPTION.ENDPOINT_KEYS_REQUIRED
     );
   }
 
@@ -38,12 +33,12 @@ export const saveSubscriptionService = async (subscriptionData, userInfo) => {
   if (!saved) {
     throw new ApiError(
       HTTP_CODES.INTERNAL_SERVER_ERROR,
-      "Failed to save notification subscription. Please try again."
+      NOTIFICATION_MESSAGE.SUBSCRIPTION.SAVE_FAILED
     );
   }
 
   return {
     statusCode: HTTP_CODES.OK,
-    message: "Push notification subscription enabled successfully.",
+    message: NOTIFICATION_MESSAGE.SUBSCRIPTION.ENABLED_SUCCESS,
   };
 };
