@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import helmet from "helmet";
 
 //? Import environment variables
 import { env } from "./config/env.js";
@@ -17,6 +18,19 @@ import routes from "./routes/index.routes.js";
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import { cronScheduler } from "./cron/cronScheduler.js";
 import { rateLimiter } from "./middlewares/rateLimiter.middleware.js";
+
+/**
+ * =====================================
+ * !Helmet - Adds security HTTP headers
+ * !Protects app from common web attacks
+ * ======================================
+ */
+
+app.use(
+  helmet({
+    contentSecurityPolicy: false, //Disabled because payment gateway (Razorpay) loads external scripts
+  })
+);
 
 /**
  * ==============================
@@ -44,16 +58,13 @@ app.use(express.urlencoded({ extended: true }));
 //? Middleware to parse cookies from incoming requests
 app.use(cookieParser());
 
-
-
-
 /**
  * ======================================
  * !Registering All API Routes
  * ======================================
  * All application routes are mounted under /api/v1
  */
- 
+
 /**
  * ======================================
  * !Global Rate Limiter Middleware
@@ -62,7 +73,7 @@ app.use(cookieParser());
  * • Limits each IP to 100 requests per minute
  * • Helps prevent abuse, spam, and brute-force attacks
  */
-app.use("/api/v1", rateLimiter , routes);
+app.use("/api/v1", rateLimiter, routes);
 
 /**
  * ===============================
