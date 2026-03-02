@@ -51,22 +51,6 @@ export const DOCTOR_MESSAGE = {
   APPOINTMENT_FAILED: "Appointment operation failed.",
 
   /* =====================================================
-     DOCUMENTS (GENERAL)
-  ===================================================== */
-  DOCUMENT_UPLOADED: "Document uploaded successfully.",
-  DOCUMENT_UPDATED: "Document updated successfully.",
-  DOCUMENT_DELETED: "Document deleted successfully.",
-
-  DOCUMENT_NOT_UPLOADED: "Document could not be uploaded.",
-  DOCUMENT_NOT_UPDATED: "Document could not be updated.",
-  DOCUMENT_NOT_DELETED: "Document could not be deleted.",
-
-  DOCUMENT_REQUIRED: "Required document is missing.",
-  DOCUMENT_INVALID: "Invalid document format provided.",
-  DOCUMENT_NOT_FOUND: "Requested document not found.",
-  DOCUMENT_ACCESS_DENIED: "You are not allowed to access this document.",
-
-  /* =====================================================
      PROFILE PICTURE
   ===================================================== */
   PROFILE_IMAGE_UPLOADED: "Doctor profile picture uploaded successfully.",
@@ -81,33 +65,9 @@ export const DOCTOR_MESSAGE = {
   PROFILE_IMAGE_INVALID: "Invalid profile picture format. Only JPG and PNG are allowed.",
   PROFILE_IMAGE_SIZE_EXCEEDED: "Profile picture size exceeds the allowed limit.",
 
-  /* =====================================================
-     MEDICAL REPORT
-  ===================================================== */
-  MEDICAL_REPORT_UPLOADED: "Medical report uploaded successfully.",
-  MEDICAL_REPORT_UPDATED: "Medical report updated successfully.",
-  MEDICAL_REPORT_DELETED: "Medical report deleted successfully.",
+ 
 
-  MEDICAL_REPORT_NOT_UPLOADED: "Medical report could not be uploaded.",
-  MEDICAL_REPORT_NOT_UPDATED: "Medical report could not be updated.",
-  MEDICAL_REPORT_NOT_DELETED: "Medical report could not be deleted.",
-
-  MEDICAL_REPORT_REQUIRED: "Medical report is required.",
-  MEDICAL_REPORT_INVALID: "Invalid medical report format provided.",
-
-  /* =====================================================
-     PRESCRIPTION
-  ===================================================== */
-  PRESCRIPTION_UPLOADED: "Prescription uploaded successfully.",
-  PRESCRIPTION_UPDATED: "Prescription updated successfully.",
-  PRESCRIPTION_DELETED: "Prescription deleted successfully.",
-
-  PRESCRIPTION_NOT_UPLOADED: "Prescription could not be uploaded.",
-  PRESCRIPTION_NOT_UPDATED: "Prescription could not be updated.",
-  PRESCRIPTION_NOT_DELETED: "Prescription could not be deleted.",
-
-  PRESCRIPTION_REQUIRED: "Prescription is required.",
-  PRESCRIPTION_INVALID: "Invalid prescription format provided.",
+ 
 
   /* =====================================================
      VALIDATION
