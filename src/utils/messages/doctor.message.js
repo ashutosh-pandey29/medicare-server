@@ -145,4 +145,6 @@ export const DOCTOR_MESSAGE = {
   SOMETHING_WENT_WRONG: "Something went wrong. Please try again later.",
   SERVER_ERROR: "Internal server error.",
   DATA_FETCH_FAILED: "Failed to fetch doctor data.",
+  DATA_FETCH :"Data fetched successfully.",
+  DEPARTMENT_ID_REQ:"Department Id is required."
 };

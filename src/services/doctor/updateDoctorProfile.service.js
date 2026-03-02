@@ -6,7 +6,7 @@ import { db } from "../db/db.service.js";
 
 export const updateDoctorProfileService = async (data, userId) => {
   if (!userId) {
-    throw new ApiError(HTTP_CODES.UNAUTHORIZED, "You are not authorized to update this profile.");
+    throw new ApiError(HTTP_CODES.UNAUTHORIZED, DOCTOR_MESSAGE.UNAUTHORIZED);
   }
 
   // find user
@@ -14,7 +14,7 @@ export const updateDoctorProfileService = async (data, userId) => {
   const isExists = await db.exists(Doctor, { userId });
 
   if (!isExists) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Doctor profile not found.");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, DOCTOR_MESSAGE.NOT_FOUND);
   }
 
   // update data
@@ -22,11 +22,11 @@ export const updateDoctorProfileService = async (data, userId) => {
   const isUpdated = await db.updateOne(Doctor, { userId }, data, { new: true });
 
   if (!isUpdated) {
-    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, "Failed to update doctor profile.");
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, DOCTOR_MESSAGE.PROFILE_NOT_UPDATED);
   }
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Doctor profile updated successfully.",
+    message: DOCTOR_MESSAGE.PROFILE_UPDATED,
   };
 };

@@ -1,4 +1,3 @@
-import { generateKey } from "crypto";
 import Doctor from "../../models/Doctor.js";
 import User from "../../models/User.js";
 import { notifyRealtime } from "../../socket/notify.js";
@@ -7,17 +6,18 @@ import { HTTP_CODES } from "../../utils/httpCodes.js";
 import { NOTIFICATION_MESSAGE } from "../../utils/messages/notification.message.js";
 import { db } from "../db/db.service.js";
 import { generateId } from "../../helpers/id.helper.js";
+import { DOCTOR_MESSAGE } from "../../utils/messages/doctor.message.js";
 
 export const createDoctorProfileService = async (payload, userId) => {
   //  Validate required userId
   if (!userId) {
-    throw new ApiError(HTTP_CODES.FORBIDDEN, "You are not authorized to create a doctor profile.");
+    throw new ApiError(HTTP_CODES.FORBIDDEN, DOCTOR_MESSAGE.FORBIDDEN);
   }
 
   const isExist = await db.exists(Doctor, { userId });
 
   if (isExist) {
-    throw new ApiError(HTTP_CODES.BAD_REQUEST, "Doctor profile already exists.");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, DOCTOR_MESSAGE.PROFILE_ALREADY_EXISTS);
   }
 
   const preparedProfile = {
@@ -38,10 +38,7 @@ export const createDoctorProfileService = async (payload, userId) => {
   const isCreated = await db.createOne(Doctor, preparedProfile);
 
   if (!isCreated) {
-    throw new ApiError(
-      HTTP_CODES.INTERNAL_SERVER_ERROR,
-      "Failed to create doctor profile. Please try again."
-    );
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, DOCTOR_MESSAGE.PROFILE_NOT_CREATED);
   }
 
   // notify admin and send a message to approve doctor profile -  real time
@@ -64,6 +61,6 @@ export const createDoctorProfileService = async (payload, userId) => {
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Doctor profile created successfully. Waiting for admin approval.",
+    message: DOCTOR_MESSAGE.PROFILE_CREATED,
   };
 };
