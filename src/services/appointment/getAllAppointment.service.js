@@ -1,6 +1,7 @@
 import Appointment from "../../models/Appointment.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
+import { APPOINTMENT_MESSAGES } from "../../utils/messages/appointment.message.js";
 import { db } from "../db/db.service.js";
 
 export const getAllAppointmentService = async (userId) => {
@@ -18,7 +19,7 @@ export const getAllAppointmentService = async (userId) => {
   );
 
   if (!appointment) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Appointment not found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, APPOINTMENT_MESSAGES.NOT_FOUND);
   }
 
   console.log(appointment);
@@ -35,7 +36,7 @@ export const getAllAppointmentService = async (userId) => {
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Appointment fetched",
+    message: APPOINTMENT_MESSAGES.FETCH_SUCCESS,
     data: preparedAppointmentData,
   };
 };

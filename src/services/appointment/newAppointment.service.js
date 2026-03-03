@@ -3,6 +3,7 @@ import Appointment from "../../models/Appointment.js";
 import Department from "../../models/Department.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
+import { APPOINTMENT_MESSAGES } from "../../utils/messages/appointment.message.js";
 import { db } from "../db/db.service.js";
 
 export const newAppointmentService = async (payload, userId) => {
@@ -16,7 +17,7 @@ export const newAppointmentService = async (payload, userId) => {
   //!<-------------------  department -> for getting fees ---------->
   const department = await db.fetchOne(Department, { _id: departmentId });
   if (!department) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Department not found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, APPOINTMENT_MESSAGES.NOT_FOUND);
   }
 
   //!<--------------- generate Appointment id --------------------->
@@ -50,7 +51,7 @@ export const newAppointmentService = async (payload, userId) => {
   const isCreated = await db.createOne(Appointment, newAppointment);
   //? <-----------If creation failed, throw error------------>
   if (!isCreated) {
-    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, "Appointment not created");
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, APPOINTMENT_MESSAGES.NOT_CREATE);
   }
 
   //!<---------Success response----------->
@@ -58,7 +59,7 @@ export const newAppointmentService = async (payload, userId) => {
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Appointment booked proceed to payment",
+    message: APPOINTMENT_MESSAGES.CREATE,
     data: data,
   };
 };

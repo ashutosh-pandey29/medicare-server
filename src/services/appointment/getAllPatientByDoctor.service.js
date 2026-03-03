@@ -2,11 +2,13 @@ import Appointment from "../../models/Appointment.js";
 import Doctor from "../../models/Doctor.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
+import { APPOINTMENT_MESSAGES } from "../../utils/messages/appointment.message.js";
+import { SERVER_MESSAGES } from "../../utils/messages/server.message.js";
 import { db } from "../db/db.service.js";
 
 export const getAllPatientByDoctorService = async (userId) => {
   if (!userId) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Appointment id not found");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, APPOINTMENT_MESSAGES.ID_NOT_FOUND);
   }
 
   // fetch appointment by user id
@@ -14,7 +16,7 @@ export const getAllPatientByDoctorService = async (userId) => {
   const doctor = await db.fetchOne(Doctor, { userId });
 
   if (!doctor) {
-    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, "Internal server error");
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, SERVER_MESSAGES.INTERNAL_SERVER_ERROR);
   }
 
   const pipeline = [
@@ -51,7 +53,7 @@ export const getAllPatientByDoctorService = async (userId) => {
   const patients = await db.aggregate(Appointment, pipeline);
 
   if (!patients) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "patient not found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, APPOINTMENT_MESSAGES.PATIENT_NOT_FOUND);
   }
 
   // const preparedAppointmentData = patients.map((appointment) => ({
@@ -61,7 +63,7 @@ export const getAllPatientByDoctorService = async (userId) => {
 
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Appointment fetched",
+    message: APPOINTMENT_MESSAGES.FETCH_SUCCESS,
     data: patients,
   };
 };

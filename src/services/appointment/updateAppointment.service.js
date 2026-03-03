@@ -3,18 +3,19 @@ import User from "../../models/User.js";
 import { notifyRealtime } from "../../socket/notify.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
+import { APPOINTMENT_MESSAGES } from "../../utils/messages/appointment.message.js";
 import { db } from "../db/db.service.js";
 
 export const updateAppointmentService = async (payload, user, appointmentId) => {
   // check appointment id exist or not
   if (!appointmentId) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Appointment id invalid or not found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, APPOINTMENT_MESSAGES.ID_NOT_FOUND);
   }
 
   // fetch  appointment from db
   const appointment = await db.fetchOne(Appointment, { appointmentId });
   if (!appointment) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "Appointment not found");
+    throw new ApiError(HTTP_CODES.NOT_FOUND, APPOINTMENT_MESSAGES.NOT_FOUND);
   }
 
   if (payload.status && user.role !== "doctor") {
@@ -36,13 +37,13 @@ export const updateAppointmentService = async (payload, user, appointmentId) => 
 
   // if update fail
   if (!isUpdated) {
-    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, "Appointment can not updated");
+    throw new ApiError(HTTP_CODES.INTERNAL_SERVER_ERROR, APPOINTMENT_MESSAGES.NOT_UPDATE);
   }
 
   // notify user when appointment confirmed or rejected by doctor
 
-  console.log(payload);
-  console.log(appointment?.userId);
+  //   console.log(payload);
+  //   console.log(appointment?.userId);
   if (payload.status === "confirmed" || payload.status === "rejected") {
     const now = new Date();
     const notificationPayload = {
@@ -59,10 +60,9 @@ export const updateAppointmentService = async (payload, user, appointmentId) => 
     await notifyRealtime(appointment?.userId, notificationPayload);
   }
 
-
   // success
   return {
     httpStatus: HTTP_CODES.OK,
-    message: "Appointment updated successfully",
+    message: APPOINTMENT_MESSAGES.UPDATED,
   };
 };

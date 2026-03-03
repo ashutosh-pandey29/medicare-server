@@ -3,7 +3,8 @@
  */
 export const APPOINTMENT_MESSAGES = {
   /* ===== APPOINTMENT BOOKING / CREATE ===== */
-  CREATE: "Appointment booked successfully",
+  ID_NOT_FOUND:"Id not found",
+  CREATE: "Appointment booked proceed to payment",
   NOT_CREATE: "Failed to book appointment",
   INVALID_BOOKING_DATA: "Invalid appointment data",
   TIME_SLOT_UNAVAILABLE: "Selected time slot is not available",
@@ -36,7 +37,7 @@ export const APPOINTMENT_MESSAGES = {
   /* ===== APPOINTMENT FETCH ===== */
   FETCH_SUCCESS: "Appointments fetched successfully",
   FETCH_FAILED: "Failed to fetch appointments",
-  NO_APPOINTMENTS_FOUND: "No appointments found",
+  NOT_FOUND: "Data not found",
   
   /* ===== PAYMENT ===== */
   PAYMENT_SUCCESS: "Payment completed successfully",
@@ -46,7 +47,11 @@ export const APPOINTMENT_MESSAGES = {
   PAYMENT_REFUNDED: "Payment refunded successfully",
   PAYMENT_REFUND_FAILED: "Failed to process refund",
   PAYMENT_ALREADY_DONE: "Payment has already been made for this appointment",
-  
+
+
+  PATIENT_NOT_FOUND:"Patient not found.",
+  PATIENT_FOUND:"Patient found.",
+  DOCTOR_NOT_FOUND:"Doctor not found",
   /* ===== NOTIFICATIONS ===== */
   REMINDER_SENT: "Appointment reminder sent successfully",
   REMINDER_FAILED: "Failed to send appointment reminder",

@@ -1,13 +1,14 @@
 import Appointment from "../../models/Appointment.js";
 import { ApiError } from "../../utils/apiError.js";
 import { HTTP_CODES } from "../../utils/httpCodes.js";
+import { APPOINTMENT_MESSAGES } from "../../utils/messages/appointment.message.js";
 import { db } from "../db/db.service.js";
 
 export const getUpcomingAppointmentService = async (userId) => {
   // check user id
 
   if (!userId) {
-    throw new ApiError(HTTP_CODES.NOT_FOUND, "User id not found");
+    throw new ApiError(HTTP_CODES.BAD_REQUEST, APPOINTMENT_MESSAGES.ID_NOT_FOUND);
   }
 
   const today = new Date();
