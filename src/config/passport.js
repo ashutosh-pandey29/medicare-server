@@ -7,6 +7,7 @@ import { Strategy as GoogleStrategy } from "passport-google-oauth20";
 // Import environment variables
 import { env } from "./env.js";
 
+
 // Configure Google authentication strategy
 passport.use(
   new GoogleStrategy(
