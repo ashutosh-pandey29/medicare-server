@@ -17,8 +17,8 @@ export const initSocket = (httpServer) => {
     },
   });
 
-  // const isProd = env.NODE_ENV === "production";
-  // console.log("socket front", env.FRONTEND_URL);
+  const isProd = env.NODE_ENV === "production";
+//   console.log("socket front", env.FRONTEND_URL);
 
   // Listen for new client connections
   io.on("connection", (socket) => {

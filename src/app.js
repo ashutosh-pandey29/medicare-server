@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import cookieParser from "cookie-parser";
 import helmet from "helmet";
+import morgan from "morgan";
 
 //? Import environment variables
 import { env } from "./config/env.js";
@@ -38,6 +39,8 @@ app.use(
  * ==============================
  */
 
+app.use(morgan("dev"));
+
 //? Enable CORS (Cross-Origin Resource Sharing)
 //? Allows frontend domain to access backend APIs
 app.use(
@@ -48,6 +51,9 @@ app.use(
     allowedHeaders: ["Content-Type", "Authorization"],
   })
 );
+
+// console frontend url 
+console.log(env.FRONTEND_URL);
 
 //? PARSE JSON PAYLOAD -  request with JSON data
 app.use(express.json());
@@ -69,6 +75,7 @@ app.get("/health", (req, res) => {
   res.status(200).json({
     success: true,
     message: "Server is running",
+    
   });
 });
 
