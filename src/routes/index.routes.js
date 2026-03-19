@@ -26,6 +26,9 @@ import paymentRoutes from "./payment/payment.routes.js";
 //! stats routes
 import statsRoutes from "./admin/stats.routes.js";
 
+//! setting routes
+import settingRoutes from "./admin/settings.routes.js";
+
 router.use("/auth", authRoutes);
 
 router.use("/department", departmentRoutes);
@@ -41,5 +44,7 @@ router.use("/admin", doctorRoutesOfAdmin);
 router.use("/payment", paymentRoutes);
 
 router.use("/stats", statsRoutes);
+
+router.use("/settings", settingRoutes);
 
 export default router;

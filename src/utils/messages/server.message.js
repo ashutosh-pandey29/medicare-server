@@ -9,7 +9,7 @@ export const SERVER_MESSAGES = {
   DATABASE_CONNECTION_FAILED: "Unable to establish a connection to the database.",
   INVALID_REQUEST: "The request is invalid or malformed.",
   OPERATION_FAILED: "The operation could not be completed at this time.",
-
+   UNDER_MAINTENANCE :"We're currently performing scheduled maintenance. We'll be back shortly.",
   /* ===== AUTH / PERMISSIONS ===== */
   UNAUTHORIZED: "Authentication is required to access this resource.",
   FORBIDDEN: "You do not have permission to perform this action.",

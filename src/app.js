@@ -19,6 +19,8 @@ import routes from "./routes/index.routes.js";
 import { globalErrorHandler } from "./middlewares/error.middleware.js";
 import { cronScheduler } from "./cron/cronScheduler.js";
 import { rateLimiter } from "./middlewares/rateLimiter.middleware.js";
+import { maintenanceMode } from "./middlewares/maintenanceMode.middleware.js";
+import { optionalAuth } from "./middlewares/optionalAuth.middleware.js";
 
 /**
  * =====================================
@@ -89,12 +91,35 @@ app.get("/health", (req, res) => {
 
 /**
  * ======================================
- * !Global Rate Limiter Middleware
+ * ! Global Middleware Pipeline
  * ======================================
- * • Applies to all routes under /api/v1
- * • Limits each IP to 100 requests per minute
- * • Helps prevent abuse, spam, and brute-force attacks
+ * Order matters — top one runs first
+ *
+ * 1. optionalAuth
+ *    • Checks for JWT token on every incoming request
+ *    • Valid token   → attaches decoded payload to req.user
+ *    • No token / invalid token → sets req.user = null (guest)
+ *    • Does not block any route — only identifies the user
+ *    • Must run BEFORE maintenanceGuard
+ *      so that req.user is available for role checking
+ *
+ * 2. maintenanceGuard
+ *    • Must run AFTER optionalAuth — requires req.user
+ *    • Maintenance mode OFF → allow all requests
+ *    • Maintenance mode ON  →
+ *        Admin (req.user.role === "admin") → allow
+ *        Login route → allow only if user is admin
+ *        Everything else → 503 Service Unavailable
+ *
+ * 3. rateLimiter (only on /api/v1)
+ *    • Restricts each IP to 100 requests per minute
+ *    • Protects against brute-force, spam, and abuse
+ *    • Limit exceeded → 429 Too Many Requests
  */
+
+
+app.use(optionalAuth);
+app.use(maintenanceMode);
 app.use("/api/v1", rateLimiter, routes);
 
 
