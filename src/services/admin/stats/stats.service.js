@@ -3,6 +3,7 @@ import Appointment from "../../../models/Appointment.js";
 import Payment from "../../../models/Payment.js";
 import { db } from "../../db/db.service.js";
 import { HTTP_CODES } from "../../../utils/httpCodes.js";
+import Department from "../../../models/Department.js";
 
 export const statsService = async () => {
   const totalDoctor = await db.countDocument(Doctor, {
@@ -17,7 +18,9 @@ export const statsService = async () => {
     paymentStatus: "success",
   });
 
-  console.log(payments);
+  const totalDepartment = await db.countDocument(Department, {});
+
+  //   console.log(payments);
   let totalRevenue = 0;
   payments.forEach((p) => {
     totalRevenue += p.amount;
@@ -30,6 +33,7 @@ export const statsService = async () => {
       totalDoctor,
       totalAppointment,
       totalRevenue,
+      totalDepartment,
     },
   };
 };
