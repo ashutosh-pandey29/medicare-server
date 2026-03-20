@@ -1,4 +1,5 @@
 import {
+  backupDBService,
   getMaintenanceModeStatus,
   maintenanceModeService,
 } from "../../../services/admin/settings/settings.service.js";
@@ -22,5 +23,26 @@ export const getMaintenanceModeStatusController = async (req, res, next) => {
     return respond.success(res, serviceResponse);
   } catch (err) {
     next(err);
+  }
+};
+
+// database backup controller
+
+export const backupDBController = async (req, res) => {
+  try {
+    const archive = await backupDBService();
+
+    res.setHeader("Content-Type", "application/zip");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename=backup-${new Date()}.zip`
+    );
+
+    archive.pipe(res);
+    archive.finalize();
+
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ message: "Backup failed" });
   }
 };
