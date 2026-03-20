@@ -28,21 +28,22 @@ export const getMaintenanceModeStatusController = async (req, res, next) => {
 
 // database backup controller
 
-export const backupDBController = async (req, res) => {
+export const backupDBController = async (req, res , next ) => {
   try {
     const archive = await backupDBService();
 
     res.setHeader("Content-Type", "application/zip");
     res.setHeader(
       "Content-Disposition",
-      `attachment; filename=backup-${new Date()}.zip`
+      `attachment; filename=backup-${new Date().toISOString()}.zip`
     );
 
     archive.pipe(res);
     archive.finalize();
 
   } catch (err) {
-    console.log(err);
-    res.status(500).json({ message: "Backup failed" });
+    
+    // pass error to global error handler
+    next(err)
   }
 };

@@ -73,7 +73,6 @@ export const getMaintenanceModeStatus = async () => {
 //   });
 // };
 
-
 export const backupDBService = () => {
   return new Promise((resolve, reject) => {
     const dumpFolder = `dump-${Date.now()}`;
@@ -92,6 +91,8 @@ export const backupDBService = () => {
       archive.on("end", () => {
         fs.rmSync(dumpFolder, { recursive: true, force: true });
       });
+
+      archive.directory(dumpFolder, false);
 
       resolve(archive);
     });

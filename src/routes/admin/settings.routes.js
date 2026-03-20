@@ -11,7 +11,8 @@ const router = express.Router();
 
 router.get(
   "/maintenance-mode",
-  //   authMiddleware, authorizedRole("admin"),
+  authMiddleware,
+  authorizedRole("admin"),
   getMaintenanceModeStatusController
 );
 
@@ -22,11 +23,6 @@ router.patch(
   maintenanceModeController
 );
 
-router.get(
-  "/backup-db",
-  authMiddleware,
-  authorizedRole("admin"),
-  backupDBController
-);
+router.get("/backup-db", authMiddleware, authorizedRole("admin"), backupDBController);
 
 export default router;
