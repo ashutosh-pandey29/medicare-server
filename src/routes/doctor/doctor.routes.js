@@ -54,7 +54,7 @@ router.put(
 router.get(
   "/:departmentId",
   authMiddleware,
-  authorizedRole("doctor"),
+  authorizedRole("doctor" , "user"),
   getDoctorByDepartmentIdController
 );
 

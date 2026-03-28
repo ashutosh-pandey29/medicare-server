@@ -19,11 +19,17 @@ router.get("/doctors/:profileId", getDoctorByIdController);
 //! Admin verifies or rejects a doctor profile after reviewing full details , access label -admin
 router.patch(
   "/doctor/:profileId/verify",
-
+  authMiddleware,
+  authorizedRole("admin"),
   verifyDoctorProfileController
 );
 
 //! rollback doctor role(doctor to normal user)
-router.patch("/doctor/:userId/rollback", rollbackDoctorController);
+router.patch(
+  "/doctor/:userId/rollback",
+  authMiddleware,
+  authorizedRole("admin"),
+  rollbackDoctorController
+);
 
 export default router;
